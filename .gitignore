@@ -55,3 +55,8 @@ docs/_build/
 
 # PyBuilder
 target/
+.idea/codeStyleSettings.xml
+.idea/dictionaries/Silas_Gyger.xml
+.idea/vcs.xml
+.idea/dictionaries/Silas_Gyger.xml
+.idea/workspace.xml
