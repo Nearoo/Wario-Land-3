@@ -38,4 +38,4 @@ class GameActor(object):
 			# ...except the one that is sending the message (see self.update())
 			if component is not self.current_component:
 				# Sen the message
-				component.recieve_message(name, value)
+				component.receive_message(name, value)
