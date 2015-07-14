@@ -204,7 +204,8 @@ class WalkLookComponent(VelocityComponent):
 
 		# Initialize all Animation objects:
 		self.animations = {
-			"stand_right": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(), (20, 29)), [100, 200, 100, 30]),
+			"stand_right": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(),
+				(20, 29)), [(0, 250), (1, 100), (2, 5), (1, 20), (2, 10), (1, 100)]),
 			"stand_left": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(), (20, 29)), [100, 200, 100, 30]).make_x_mirror(),
 			"walk_right": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5),
 			"walk_left": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5).make_x_mirror(),
