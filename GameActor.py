@@ -1,17 +1,32 @@
-import pygame
+from globals import pygame
+
+
+class EngineWrapper:
+	"""Only exists to make it impossible for the components
+	to access things of the engine they shouldn't. It only contains
+	the instances of important things like input, world, or graphics."""
+	input = None
+	world = None
+	graphics = None
+	sound = None
+
 
 class GameActor(object):
-	def __init__(self, position, Input, World, Graphics):
-		# Save pointers to the important classes
-		self.input = Input
-		self.world = World
-		self.graphics = Graphics
+	engine = EngineWrapper()
+
+	def __init__(self, position, input, world, graphics):
+		# Update the static variable engine:
+		# This is kind of dangerous if we had multiple engines. Luckily we don't.
+		self.engine.input = input
+		self.engine.world = world
+		self.engine.graphics = graphics
 		# Create to own rect
 		self.rect = pygame.Rect(position, (1, 1))
 		# Initialize the var used later (see self.update & self.send_message)
 		self.current_component = None
 		# Initialize the components list, classes inheriting from this one will fill it with components
 		self.components = []
+
 	def update(self):
 		"""Updates every component - should not be changed by inheriting classes!"""
 		# For every component
@@ -19,7 +34,7 @@ class GameActor(object):
 			# Save to current component so components don't send messages to themselves (see self.send_message())
 			self.current_component = component
 			# Update the compontent, handig over input, world and graphics
-			component.update(self)
+			component.update(self, self.engine)
 
 		# Call the private update-method - used by inhertiting classes.
 		self._update()

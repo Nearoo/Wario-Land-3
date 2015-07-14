@@ -2,7 +2,7 @@ from BasicComponents import *
 
 
 class SolidCollisionComponent(VelocityComponent):
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		# Debug: Draw rects and text..
 		draw_things = True
 		# Debug: Draw rect-number
@@ -15,7 +15,7 @@ class SolidCollisionComponent(VelocityComponent):
 		# Move the copy with velocity, so we can see how the rect would look like after applied velocity:
 		rect_copy.move_ip(self.velocity)
 		# Get a colliding rect:
-		colliding_rects = game_actor.world.get_colliding_rects("solid", rect_copy)
+		colliding_rects = engine.world.get_colliding_rects("solid", rect_copy)
 		# Here, the side on which the game actor is colliding is stored ("left", "right" etc...)
 		colliding_side = ""
 		# Create a velocitry_multiplier with which the velocity will be multiplied in the end
@@ -48,31 +48,31 @@ class SolidCollisionComponent(VelocityComponent):
 				else:
 					colliding_side = "top"
 
-			if draw_things: game_actor.graphics.draw_rect(colliding_rect, (43, 192, 225), 2)
+			if draw_things: engine.graphics.draw_rect(colliding_rect, (43, 192, 225), 2)
 			# Now determine if another rect is on the side game_actor is colliding with, and if it is, ignore the collision
 			if colliding_side == "top":
-				if game_actor.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group != "solid":
 					velocity_multiplier[1] = 0
 					colliding_sides_list.append(colliding_side)
 					if draw_things:
-						self.draw_debug(game_actor, colliding_rect, rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 			elif colliding_side == "bottom":
-				if game_actor.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group != "solid":
 					velocity_multiplier[1] = 0
 					if draw_things:
-						self.draw_debug(game_actor, colliding_rect, rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == "right":
-				if game_actor.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group != "solid":
 					velocity_multiplier[0] = 0
 					if draw_things:
-						self.draw_debug(game_actor, colliding_rect, rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == "left":
-				if game_actor.world.get_tile_relative_to("main", colliding_rect, (0, 1)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (0, 1)).material_group != "solid":
 					velocity_multiplier[0] = 0
 					if draw_things:
-						self.draw_debug(game_actor, colliding_rect, rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			rect_nr += 1
 
@@ -81,10 +81,10 @@ class SolidCollisionComponent(VelocityComponent):
 		game_actor.send_message(COLLISION_SIDES, colliding_sides_list)
 
 	@staticmethod
-	def draw_debug(game_actor, colliding_rect, rect_nr, colliding_side):
+	def draw_debug(engine, colliding_rect, rect_nr, colliding_side):
 		colliding_sides = ["top", "left", "bottom", "right"]
-		game_actor.graphics.draw_rect(colliding_rect, (225, 0, 0), 1)
-		game_actor.graphics.draw_text(rect_nr, colliding_rect.topleft, (225, 225, 225))
+		engine.graphics.draw_rect(colliding_rect, (225, 0, 0), 1)
+		engine.graphics.draw_text(rect_nr, colliding_rect.topleft, (225, 225, 225))
 
 	@staticmethod
 	def get_collision_vector(static_rect, mov_rect, mov_vel):
@@ -102,14 +102,14 @@ class GravityComponent(VelocityComponent):
 		self.g = 1
 		self.max_fall_speed = 2
 
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		if self.velocity[1] <= self.max_fall_speed:
 			self.velocity = self.velocity[0], self.velocity[1] + self.g
 			game_actor.send_message(VELOCITY, self.velocity)
 
 
 class MoveAllDirectionsComponent(VelocityComponent):
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		if game_actor.input.pressed_keys[K_RIGHT]:
 			self.velocity = [1, self.velocity[1]]
 			game_actor.send_message(VELOCITY, self.velocity)
@@ -143,7 +143,7 @@ class ApplyVelocityComponent(VelocityComponent):
 		# Use to save the fraction part of a velocity even dough pygame only moves in full steps, rounding downwards:
 		self._tmp_velocity_frac = [0, 0]
 
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		# First, since it's changed later on, the velocity gets copied in order to prevent a continuing increase
 		# #if no other components are there to change it back:
 		tmp_velocity = self.velocity

@@ -21,7 +21,7 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 		if name == VELOCITY:
 			self.velocity = value
 
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		if (self.state == "upright-stay" or
 					self.state == "crouch-stay" or
 					self.state == "jump-stay" or
@@ -68,7 +68,7 @@ class WarioStatesComponent(StatesComponent):
 		# Set how long Wario can jump until the gravity takes him
 		self.jump_duration = 20
 
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		# Update states:
 
 		if self.state == "upright-stay":
@@ -76,56 +76,56 @@ class WarioStatesComponent(StatesComponent):
 			if self.count_frames(1800, True):
 				self.state = "sleep"
 
-			elif game_actor.input.smoothkeys[self.RIGHT] or game_actor.input.smoothkeys[self.LEFT]:
+			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 				self.state = "upright-move"
-			for event in game_actor.input.events:
+			for event in engine.input.events:
 				if event.type == KEYDOWN:
-					if game_actor.input.smoothkeys[self.DOWN]:
+					if engine.input.smoothkeys[self.DOWN]:
 						self.state = "crouch-stay"
 						break
-					elif game_actor.input.smoothkeys[self.A]:
+					elif engine.input.smoothkeys[self.A]:
 						self.state = "jump-stay"
 
 			if not "bottom" in self.colliding_sides:
 				self.state = "fall-stay"
 
 		elif self.state == "upright-move":
-			if game_actor.input.smoothkeys[self.DOWN]:
+			if engine.input.smoothkeys[self.DOWN]:
 				self.state = "crouch-move"
-			elif game_actor.input.smoothkeys[self.A]:
+			elif engine.input.smoothkeys[self.A]:
 				self.state = "jump-move"
-			if not game_actor.input.smoothkeys[self.RIGHT] and not game_actor.input.smoothkeys[self.LEFT]:
+			if not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = "upright-stay"
 
 			if not "bottom" in self.colliding_sides:
 				self.state = "fall-move"
 
 		elif self.state == "sleep":
-			if (game_actor.input.smoothkeys[self.DOWN] or
-						game_actor.input.smoothkeys[self.UP] or
-						game_actor.input.smoothkeys[self.LEFT] or
-						game_actor.input.smoothkeys[self.RIGHT] or
-						game_actor.input.smoothkeys[self.A] or
-						game_actor.input.smoothkeys[self.B]):
+			if (engine.input.smoothkeys[self.DOWN] or
+						engine.input.smoothkeys[self.UP] or
+						engine.input.smoothkeys[self.LEFT] or
+						engine.input.smoothkeys[self.RIGHT] or
+						engine.input.smoothkeys[self.A] or
+						engine.input.smoothkeys[self.B]):
 				self.state = "upright-stay"
 
 		elif self.state == "crouch-stay":
-			if game_actor.input.smoothkeys[self.LEFT] or game_actor.input.smoothkeys[self.RIGHT]:
+			if engine.input.smoothkeys[self.LEFT] or engine.input.smoothkeys[self.RIGHT]:
 				self.state = "crouch-move"
 
-			elif not game_actor.input.smoothkeys[self.DOWN]:
+			elif not engine.input.smoothkeys[self.DOWN]:
 					self.state = "upright-stay"
 
 		elif self.state == "crouch-move":
-			if not game_actor.input.smoothkeys[self.DOWN]:
+			if not engine.input.smoothkeys[self.DOWN]:
 					self.state = "upright-move"
-			elif not game_actor.input.smoothkeys[self.RIGHT] and not game_actor.input.smoothkeys[self.LEFT]:
+			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = "crouch-stay"
 
 		elif self.state == "jump-stay":
-			if not game_actor.input.smoothkeys[self.A]:
+			if not engine.input.smoothkeys[self.A]:
 				self.state = "fall-stay"
-			elif game_actor.input.smoothkeys[self.RIGHT] or game_actor.input.smoothkeys[self.LEFT]:
+			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 					self.state = "jump-move"
 
 			if self.state_stack[-1] == "jump-move":
@@ -137,9 +137,9 @@ class WarioStatesComponent(StatesComponent):
 				self.state = "fall-stay"
 
 		elif self.state == "jump-move":
-			if not game_actor.input.smoothkeys[self.A]:
+			if not engine.input.smoothkeys[self.A]:
 				self.state = "fall-move"
-			elif not game_actor.input.smoothkeys[self.RIGHT] and not game_actor.input.smoothkeys[self.LEFT]:
+			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = "jump-stay"
 
 			if self.state_stack[-1] == "jump-stay":
@@ -151,20 +151,20 @@ class WarioStatesComponent(StatesComponent):
 				self.state = "fall-move"
 
 		elif self.state == "fall-stay":
-			if game_actor.input.smoothkeys[self.RIGHT] or game_actor.input.smoothkeys[self.LEFT]:
+			if engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 				self.state = "fall-move"
 			if "bottom" in self.colliding_sides:
 				self.state = "upright-stay"
 
 		elif self.state == "fall-move":
-			if not game_actor.input.smoothkeys[self.RIGHT] and not game_actor.input.smoothkeys[self.LEFT]:
+			if not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = "fall-stay"
 
 			if "bottom" in self.colliding_sides:
 				self.state = "upright-move"
 
 		# Update Warios look-direction:
-		for event in game_actor.input.events:
+		for event in engine.input.events:
 			if event.type == KEYDOWN:
 				if event.key == self.RIGHT:
 					self.look_direction = "right"
@@ -179,7 +179,7 @@ class WarioStatesComponent(StatesComponent):
 			self.state_stack.pop(0)
 
 		if self.draw_state:
-			game_actor.graphics.draw_text(self.state, (20, 20), (225, 0, 0))
+			engine.graphics.draw_text(self.state, (20, 20), (225, 0, 0))
 
 	def count_frames(self, frame_amount, reset_if_new_state=True):
 		"""Automatically counts frames to the given frame_amount.
@@ -225,7 +225,7 @@ class WalkLookComponent(VelocityComponent):
 		if name == COLLISION_SIDES:
 			self.colliding_sides_list = value
 
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		if not "bottom" in self.colliding_sides_list:
 			if self.velocity[0] > 0:
 				if not self.current_animation_name == "jump_right":
@@ -258,7 +258,7 @@ class WalkLookComponent(VelocityComponent):
 		self.current_animation.update()
 		# Calculate the position of the image so its midbottom is aligned with the midbottom of the game_actor
 		surface_pos = self.current_animation.get_surface().get_rect(midbottom = game_actor.rect.midbottom)
-		game_actor.graphics.blit(self.current_animation.get_surface(), surface_pos)
+		engine.graphics.blit(self.current_animation.get_surface(), surface_pos)
 
 	def start_animation(self, animation_name):
 		self.current_animation_name = animation_name

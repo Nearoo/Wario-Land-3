@@ -16,7 +16,7 @@ class GameActorComponent(object):
 	Everything they need they store themselves - if they need to communicate with each other, they can either
 	send a message using game_actor.send((name, value)) or receive a message using self.recieve(message)."""
 
-	def update(self, game_actor):
+	def update(self, game_actor, engine):
 		"""Update the component.
 		Everything from world to input to graphics is included in game_actor (game_actor.world etc...)"""
 		pass
