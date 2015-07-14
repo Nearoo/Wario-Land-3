@@ -10,16 +10,18 @@ class EngineWrapper:
 	graphics = None
 	sound = None
 
+	def __init__(self, input, world, graphics, sound=None):
+		self.input = input
+		self.world = world
+		self.graphics = graphics
+		self.sound = sound
+
 
 class GameActor(object):
-	engine = EngineWrapper()
-
 	def __init__(self, position, input, world, graphics):
 		# Update the static variable engine:
 		# This is kind of dangerous if we had multiple engines. Luckily we don't.
-		self.engine.input = input
-		self.engine.world = world
-		self.engine.graphics = graphics
+		self.engine = EngineWrapper(input, world, graphics)
 		# Create to own rect
 		self.rect = pygame.Rect(position, (1, 1))
 		# Initialize the var used later (see self.update & self.send_message)
