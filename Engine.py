@@ -7,6 +7,7 @@ from Input import *
 from World import *
 from Graphics import *
 from Tile import *
+from GameActorController import *
 
 from Actors import *
 
@@ -23,8 +24,7 @@ class Engine:
 		self.tiles = []
 		# Save the fps:
 		self.fps = fps
-		# All actors will be in here
-		self.actors = []
+
 
 		# Create instance of Graphics-Engine:
 		self.graphics = Graphics(screen_size)
@@ -32,6 +32,10 @@ class Engine:
 		self.world = World()
 		# Create instance of input-engine
 		self.input = Input()
+		# Create actors-controller
+		self.actors = GameActorController()
+		# Create sound-controller (not jet programmed...)
+		self.sound = None
 
 		# Create pygame.Clock for fps-control
 		self.CLOCK = pygame.time.Clock()
@@ -39,10 +43,8 @@ class Engine:
 		# Load first map (temporary):
 		self.load_tmx("Forest_N1_1.tmx")
 
-		#DEBUG: Draw all ids:
+		# DEBUG: Draw all ids:
 		self.draw_tile_ids = False
-
-		self.graphics.set_camera_focus(self.actors[0])
 
 	def update(self):
 		"""Updates everything. Shold be called once per frame."""
@@ -54,16 +56,12 @@ class Engine:
 		self.world.update()
 		# Draw the world:
 		self.draw_world()
-		#Update Game-Actors:
-		self.update_gameactors()
+		# Update Game-Actors:
+		self.actors.update()
 		# Update screen:
 		self.graphics.update()
 		# Make sure engine doesn't run faster than 60 fps:
 		self.CLOCK.tick(self.fps)
-
-	def update_gameactors(self):
-		for actor in self.actors:
-			actor.update()
 
 	def load_tmx(self, filepath):
 		"""
@@ -94,7 +92,8 @@ class Engine:
 						# Update tile-property. (What exactly is done is class-specific.)
 						self.tiles[int(tile.attrib["id"])].set_property(property.attrib["name"], property.attrib["value"])
 
-		# The next coupple of lines try to fill following list which contains all information about what tile are where on which layer:
+		# The next coupple of lines try to fill following list which contains all information
+		#  about what tile are where on which layer:
 		tile_grid_layers = []
 
 		# Iterate over all layers
@@ -133,7 +132,7 @@ class Engine:
 		self.world.set_world_data(tile_grid_layers, grid_size, tile_size)
 
 		# Then, parse the objectgroup-layers
-		self.actors = []
+		self.actors = GameActorController()
 		# For objectgroup-layer...
 		for objectgroup in self.tmx_root.findall("objectgroup"):
 			# If layername == "main"...
@@ -141,7 +140,10 @@ class Engine:
 				# For every object in that layer...
 				for object in objectgroup.findall("object"):
 					# Spawn an instance by that name. See self.spawn_gameactor_by_name for further details.
-					self.spawn_gameactor_by_name(object.attrib["name"], (float(object.attrib["x"]), float(object.attrib["y"])-float(object.attrib["height"])))
+					actor_name = object.attrib["name"]
+					position = (float(object.attrib["x"]), float(object.attrib["y"])-float(object.attrib["height"]))
+					self.actors.spawn_game_actor(actor_name, position, self.input, self.world, self.graphics, self.sound)
+					# self.spawn_gameactor_by_name(object.attrib["name"], (float(object.attrib["x"]), float(object.attrib["y"])-float(object.attrib["height"])))
 
 	def spawn_gameactor_by_name(self, name, position):
 		"""
