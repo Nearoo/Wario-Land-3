@@ -1,7 +1,13 @@
 from globals import pygame
+from EngineController import *
 
-class Graphics:
-	def __init__(self, screen_size):
+
+class Graphics(EngineController):
+	def __init__(self, engine_wrapper, screen_size):
+		# Update the engine_wrapper:
+		self.engine_wrapper = engine_wrapper
+		self.engine_wrapper.graphics = self
+
 		self.screen_size = screen_size
 		self.SCREEN = pygame.display.set_mode(screen_size)
 		self.BLACK_SCREEN = pygame.Surface(screen_size)

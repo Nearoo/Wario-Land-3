@@ -2,13 +2,19 @@ import xml.etree.ElementTree as ET
 from globals import pygame
 from pygame.locals import *
 import copy
+from EngineController import *
 
-class World:
+
+class World(EngineController):
 	"""
 	Stores all level-related data like tile-position, world-collision etc.
 	Before something can be done, a Tiled-levelfile must be loaded, using the "load_tmx_method.
 	"""
-	def __init__(self):
+	def __init__(self, engine_wrapper):
+		# Update the engine_wrapper:
+		self.engine_wrapper = engine_wrapper
+		self.engine_wrapper.world = self
+
 		self.grid_size = (1, 1) # Size of grid in amount of tiles
 		self.tile_size = (1, 1) # Size of indiv. tiles
 

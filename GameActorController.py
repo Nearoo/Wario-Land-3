@@ -7,7 +7,11 @@ class GameActorController:
 	Cares for and contains all game-actors active or inactive in the game.
 	"""
 
-	def __init__(self, log_level = logging.ERROR):
+	def __init__(self, engine_wrapper, log_level = logging.ERROR):
+		# Update the engine_wrapper:
+		self.engine_wrapper = engine_wrapper
+		self.engine_wrapper.actors = self
+
 		# All game-actors, sorted by instance id (id())
 		self.actors = {}
 		# Create deletion buffer-list, so actors can't delete while updating:
@@ -48,7 +52,7 @@ class GameActorController:
 		# Check if game_actor_type is existent:
 		assert actor_type in self.game_actor_types, "Unknown GameActor-type \"%s\""
 		# Create new actor:
-		new_actor = self.game_actor_types[actor_type](position, input, world, graphics, sound, self)
+		new_actor = self.game_actor_types[actor_type](position, self.engine_wrapper)
 		# Add it to list
 		self.actors[id(new_actor)] = new_actor
 

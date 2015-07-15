@@ -16,6 +16,18 @@ import utilities
 import xml.etree.ElementTree as ET
 
 
+class EngineWrapper:
+	"""
+	Only exists to make it impossible for the components
+	to access things of the engine they shouldn't. It only contains
+	the instances of important things like input, world, or graphics.
+	"""
+	input = None
+	world = None
+	graphics = None
+	sound = None
+	actors = None
+
 class Engine:
 	def __init__(self, screen_size, fps):
 		# Will be used to store the currently loaded tmx-file:
@@ -25,15 +37,17 @@ class Engine:
 		# Save the fps:
 		self.fps = fps
 
+		# Create the engine-wrapper:
+		self.engine_wrapper = EngineWrapper
 
 		# Create instance of Graphics-Engine:
-		self.graphics = Graphics(screen_size)
+		self.graphics = Graphics(self.engine_wrapper,screen_size)
 		# Create instance of World:
-		self.world = World()
+		self.world = World(self.engine_wrapper)
 		# Create instance of input-engine
-		self.input = Input()
+		self.input = Input(self.engine_wrapper)
 		# Create actors-controller
-		self.actors = GameActorController()
+		self.actors = GameActorController(self.engine_wrapper)
 		# Create sound-controller (not jet programmed...)
 		self.sound = None
 
@@ -132,7 +146,7 @@ class Engine:
 		self.world.set_world_data(tile_grid_layers, grid_size, tile_size)
 
 		# Then, parse the objectgroup-layers
-		self.actors = GameActorController()
+		self.actors = GameActorController(self.engine_wrapper)
 		# For objectgroup-layer...
 		for objectgroup in self.tmx_root.findall("objectgroup"):
 			# If layername == "main"...
