@@ -91,7 +91,12 @@ class Animation:
 		"""
 		Resets the animation to the first frame without pausing it.
 		"""
+		# Sets the current sprite to 0:
 		self.current_sprite = 0
+		# Makes the surface empty:
+		self.surface.blit(self.empty_surface, (0, 0))
+		# Blit the image of the new frame onto the surface
+		self.surface.blit(self.sprites[self.sprite_order[self.current_sprite][0]], (0, 0))
 		return self
 
 	def set_spritenr(self, nr):
