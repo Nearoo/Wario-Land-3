@@ -128,7 +128,7 @@ class WarioStatesComponent(StatesComponent):
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 					self.state = WarioStates.JUMP_MOVE
 
-			if self.state_stack[-1] == WarioStates.JUMP_MOVE:
+			if self.state_stack[-1] == WarioStates.JUMP_MOVE or self.state_stack[-1] == WarioStates.JUMP_STAY:
 				time_over = self.count_frames(self.jump_duration, False)
 			else:
 				time_over = self.count_frames(self.jump_duration, True)
@@ -142,7 +142,7 @@ class WarioStatesComponent(StatesComponent):
 			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.JUMP_STAY
 
-			if self.state_stack[-1] == WarioStates.JUMP_STAY:
+			if self.state_stack[-1] == WarioStates.JUMP_STAY or self.state_stack[-1] == WarioStates.JUMP_MOVE:
 				time_over = self.count_frames(self.jump_duration, False)
 			else:
 				time_over = self.count_frames(self.jump_duration, True)
