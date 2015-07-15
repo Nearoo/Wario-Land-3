@@ -9,16 +9,18 @@ class EngineWrapper:
 	world = None
 	graphics = None
 	sound = None
+	actors = None
 
-	def __init__(self, input, world, graphics, sound=None):
+	def __init__(self, input, world, graphics, sound=None, actors = None):
 		self.input = input
 		self.world = world
 		self.graphics = graphics
 		self.sound = sound
+		self.actors = actors
 
 
 class GameActor(object):
-	def __init__(self, position, input, world, graphics):
+	def __init__(self, position, input, world, graphics, sound, actors):
 		# Update the static variable engine:
 		# This is kind of dangerous if we had multiple engines. Luckily we don't.
 		self.engine = EngineWrapper(input, world, graphics)
@@ -56,3 +58,12 @@ class GameActor(object):
 			if component is not self.current_component:
 				# Sen the message
 				component.receive_message(name, value)
+
+	def receive_actor_message(self, sender_id, name, value):
+		"""
+		Used by other GameActors to send messages like "damage" to this instance.
+		:param name: The name of the message, e.g. "damage"
+		:param value: The value of the message, e.g. 10
+		:return: None
+		"""
+		pass
