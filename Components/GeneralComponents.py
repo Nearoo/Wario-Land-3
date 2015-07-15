@@ -4,7 +4,7 @@ from BasicComponents import *
 class SolidCollisionComponent(VelocityComponent):
 	def update(self, game_actor, engine):
 		# Debug: Draw rects and text..
-		draw_things = True
+		draw_things = False
 		# Debug: Draw rect-number
 		rect_nr = 0
 		# Clear the list which stores what sides are colliding:
@@ -17,15 +17,16 @@ class SolidCollisionComponent(VelocityComponent):
 		# Get a colliding rect:
 		colliding_rects = engine.world.get_colliding_rects("solid", rect_copy)
 		# Here, the side on which the game actor is colliding is stored (LEFT, RIGHT etc...)
-		colliding_side = ""
-		# Create a velocitry_multiplier with which the velocity will be multiplied in the end
-		# (In the end because otherwise the algorythm doesn't work)
+		colliding_side = None
+		# Create a velocity_multiplier with which the velocity will be multiplied in the end
+		# (In the end because otherwise the algorithm doesn't work)
 		velocity_multiplier = [1, 1]
 		# For rect in colliding rects:
 		for colliding_rect in colliding_rects:
 			# Calculate collision-vector
 			colliding_vector = self.get_collision_vector(colliding_rect, rect_copy, self.velocity)
-			# If game_actor only moves in one direction and a collision happens, there's no quiestion what component sould be set to zweo
+			# If game_actor only moves in one direction and a collision happens, there's no question what
+			#  component should be set to zero
 			if self.velocity[0] == 0:
 				if self.velocity[1] > 0:
 					colliding_side = BOTTOM
@@ -36,7 +37,7 @@ class SolidCollisionComponent(VelocityComponent):
 					colliding_side = RIGHT
 				else:
 					colliding_side = LEFT
-			# Actual algorythm:
+			# Actual algorithm:
 			elif abs(1.*self.velocity[0]/self.velocity[1]) > abs(1.*colliding_vector[0] / colliding_vector[1]):
 				if self.velocity[0] > 0:
 					colliding_side = RIGHT
