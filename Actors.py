@@ -8,8 +8,8 @@ class Wario(GameActor):
 		GameActor.__init__(self, position, Input, World, Graphics)
 		self.rect.size = (20, 30)
 		self.components = [GravityComponent(),
-						   WalkLookComponent(),
-						   WarioStatesComponent(),
-						   WarioMoveComponent(),
-						   SolidCollisionComponent(),
-						   ApplyVelocityComponent()]
+						WarioStatesComponent(),
+						LookComponent(),
+						WarioMoveComponent(),
+						SolidCollisionComponent(),
+						ApplyVelocityComponent()]
