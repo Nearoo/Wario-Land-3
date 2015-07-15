@@ -74,7 +74,8 @@ class WarioStatesComponent(StatesComponent):
 		if self.state == WarioStates.UPRIGHT_STAY:
 			# Count up to 1800, (30 sec) and go to sleep if reached:
 			if self.count_frames(1800, True):
-				self.state = WarioStates.SLEEP
+				# The animation-component must handle this!!
+				self.state = WarioStates.GOTO_SLEEP
 
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.UPRIGHT_MOVE
@@ -107,7 +108,8 @@ class WarioStatesComponent(StatesComponent):
 						engine.input.smoothkeys[self.RIGHT] or
 						engine.input.smoothkeys[self.A] or
 						engine.input.smoothkeys[self.B]):
-				self.state = WarioStates.UPRIGHT_STAY
+				# The animation-component must handle this!!
+				self.state = WarioStates.WAKE_UP
 
 		elif self.state == WarioStates.CROUCH_STAY:
 			if engine.input.smoothkeys[self.LEFT] or engine.input.smoothkeys[self.RIGHT]:
@@ -203,14 +205,28 @@ class LookComponent(StatesComponent):
 		super(LookComponent, self).__init__()
 
 		# Initialize all Animation objects:
-		self.animations = {
-			"stand_right": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(),
-				(20, 29)), [(0, 250), (1, 100), (2, 5), (1, 20), (2, 10), (1, 100)]),
-			"stand_left": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(), (20, 29)), [100, 200, 100, 30]).make_x_mirror(),
-			"walk_right": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5),
-			"walk_left": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5).make_x_mirror(),
-			"jump_right": Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1),
-			"jump_left": Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1).make_x_mirror()}
+		self.animations = {}
+		self.animations["stand_right"] = Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(),
+				(20, 29)), [(0, 250), (1, 100), (2, 5), (1, 20), (2, 10), (1, 100)])
+		self.animations["stand_left"] = self.animations["stand_right"].make_x_mirror()
+
+		self.animations["walk_right"] = Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5)
+		self.animations["walk_left"] = self.animations["walk_right"].make_x_mirror()
+
+		self.animations["jump_right"] = Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1)
+		self.animations["jump_left"] = self.animations["jump_right"].make_x_mirror()
+
+		# Load images for the next coupple of animations:
+		gotosleep_imgs = split_tiled_image(pygame.image.load("images\\ANI_Wario_gotosleep_r.png").convert_alpha(), (28, 30))
+
+		self.animations["gotosleep_right"] = Animation(gotosleep_imgs, [(0, 15), (1, 15), (2, 15), (3, 15), (4, 15)])
+		self.animations["gotosleep_left"] = self.animations["gotosleep_right"].make_x_mirror()
+
+		self.animations["sleep_right"] = Animation(gotosleep_imgs, [(4, 30), (5, 20), (6, 100), (5, 20)])
+		self.animations["sleep_left"] = self.animations["sleep_right"].make_x_mirror()
+
+		self.animations["wakeup_right"] = Animation(gotosleep_imgs, [(4, 25), (3, 25), (2, 25), (1, 25), (0, 25)])
+		self.animations["wakeup_left"] = self.animations["wakeup_right"].make_x_mirror()
 
 		# Save the current animation
 		self.current_animation = self.animations["stand_right"]
@@ -234,6 +250,19 @@ class LookComponent(StatesComponent):
 			self.state == WarioStates.JUMP_STAY:
 			self.play_animation("jump_"+ld)
 
+		elif self.state == WarioStates.GOTO_SLEEP:
+			self.play_animation("gotosleep_"+ld)
+			if self.current_animation.get_spritenr() == 4:
+				self.play_animation("sleep_"+ld)
+				self.state = WarioStates.SLEEP
+				game_actor.send_message(MSGN.WARIO_STATE, self.state)
+		elif self.state == WarioStates.WAKE_UP:
+			self.play_animation("wakeup_"+ld)
+			if self.current_animation.get_spritenr() == 4:
+				self.play_animation("stand_"+ld)
+				self.state = WarioStates.UPRIGHT_STAY
+				game_actor.send_message(MSGN.WARIO_STATE, self.state)
+
 		# Update the current animation:
 		self.current_animation.update()
 		# Calculate the position of the image so its midbottom is aligned with the midbottom of the game_actor
@@ -249,3 +278,4 @@ class LookComponent(StatesComponent):
 			self.current_animation_name = animation_name
 			self.current_animation = self.animations[self.current_animation_name]
 			self.current_animation.reset()
+			self.current_animation.update()
