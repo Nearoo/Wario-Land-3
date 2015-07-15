@@ -198,9 +198,9 @@ class WarioStatesComponent(StatesComponent):
 			return False
 
 
-class WalkLookComponent(VelocityComponent):
+class LookComponent(StatesComponent):
 	def __init__(self):
-		VelocityComponent.__init__(self)
+		super(LookComponent, self).__init__()
 
 		# Initialize all Animation objects:
 		self.animations = {
@@ -211,6 +211,7 @@ class WalkLookComponent(VelocityComponent):
 			"walk_left": Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5).make_x_mirror(),
 			"jump_right": Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1),
 			"jump_left": Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1).make_x_mirror()}
+
 		# Save the current animation
 		self.current_animation = self.animations["stand_right"]
 		# Save the last animation to check if a new animation has started:
@@ -218,51 +219,33 @@ class WalkLookComponent(VelocityComponent):
 		# Play the current animation
 		self.current_animation.play()
 
-		# Save collision-sides
-		self.colliding_sides_list = []
-
 	def receive_message(self, name, value):
-		VelocityComponent.receive_message(self, name, value)
-		if name == MSGN.COLLISION_SIDES:
-			self.colliding_sides_list = value
+		super(LookComponent, self).receive_message(name, value)
 
 	def update(self, game_actor, engine):
-		if not BOTTOM in self.colliding_sides_list:
-			if self.velocity[0] > 0:
-				if not self.current_animation_name == "jump_right":
-					self.start_animation("jump_right")
-			elif self.velocity[0] < 0:
-				if not self.current_animation_name == "jump_left":
-					self.start_animation("jump_left")
-			else:
-				if self.current_animation_name == "walk_left" or self.current_animation_name == "stand_left":
-					self.start_animation("jump_left")
-				elif self.current_animation_name == "walk_right" or self.current_animation_name == "stand_right":
-					self.start_animation("jump_right")
-		else:
-			# If game actor is moving to the right:
-			if self.velocity[0] > 0:
-				# ...and current_animation isn't already walk_right:
-				if not self.current_animation_name == "walk_right":
-					self.start_animation("walk_right")
-			# Same vice versa
-			elif self.velocity[0] < 0:
-				if not self.current_animation_name == "walk_left":
-					self.start_animation("walk_left")
-			else:
-				# Else the game_actor is standing. Depending on the direction he walked before he's looking in one direction...
-				if self.current_animation_name == "walk_right" or self.current_animation_name == "jump_right":
-					self.start_animation("stand_right")
-				elif self.current_animation_name == "walk_left" or self.current_animation_name == "jump_left":
-					self.start_animation("stand_left")
+		ld = "right" if self.look_direction == RIGHT else "left"
+		if self.state == WarioStates.UPRIGHT_STAY:
+			self.play_animation("stand_"+ld)
+		elif self.state == WarioStates.UPRIGHT_MOVE:
+			self.play_animation("walk_"+ld)
+		elif self.state == WarioStates.FALL_MOVE or \
+			self.state == WarioStates.FALL_STAY or \
+			self.state == WarioStates.JUMP_MOVE or \
+			self.state == WarioStates.JUMP_STAY:
+			self.play_animation("jump_"+ld)
 
+		# Update the current animation:
 		self.current_animation.update()
 		# Calculate the position of the image so its midbottom is aligned with the midbottom of the game_actor
 		surface_pos = self.current_animation.get_surface().get_rect(midbottom = game_actor.rect.midbottom)
+		# Blit the current sprite to the screen:
 		engine.graphics.blit(self.current_animation.get_surface(), surface_pos)
 
-	def start_animation(self, animation_name):
-		self.current_animation_name = animation_name
-		self.current_animation = self.animations[animation_name]
-		self.current_animation.reset()
-		self.current_animation.update()
+	def play_animation(self, animation_name):
+		"""Plays an animation only if the wanted animation isn't
+		already playing.
+		"""
+		if self.current_animation_name != animation_name:
+			self.current_animation_name = animation_name
+			self.current_animation = self.animations[self.current_animation_name]
+			self.current_animation.reset()
