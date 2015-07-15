@@ -34,20 +34,20 @@ class VelocityComponent(GameActorComponent):
 		self.velocity = [0, 0]
 
 	def receive_message(self, name, value):
-		if name == VELOCITY:
+		if name == MSGN.VELOCITY:
 			self.velocity = list(value)
 
 
 class StatesComponent(GameActorComponent):
 	def __init__(self):
 		self.colliding_sides = []
-		self.state = "standing"
-		self.look_direction = "right"
+		self.state = WarioStates.UPRIGHT_STAY
+		self.look_direction = RIGHT
 
 	def receive_message(self, name, value):
-		if name == WARIO_STATE:
+		if name == MSGN.WARIO_STATE:
 			self.state = value
-		elif name == WARIO_LOOKDIRECTION:
+		elif name == MSGN.WARIO_LOOKDIRECTION:
 			self.look_direction = value
-		elif name == COLLISION_SIDES:
+		elif name == MSGN.COLLISION_SIDES:
 			self.colliding_sides = value

@@ -18,28 +18,28 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 
 	def receive_message(self, name, value):
 		super(WarioMoveComponent, self).receive_message(name, value)
-		if name == VELOCITY:
+		if name == MSGN.VELOCITY:
 			self.velocity = value
 
 	def update(self, game_actor, engine):
-		if (self.state == "upright-stay" or
-					self.state == "crouch-stay" or
-					self.state == "jump-stay" or
-					self.state == "fall-stay"):
+		if (self.state == WarioStates.UPRIGHT_STAY or
+					self.state == WarioStates.CROUCH_STAY or
+					self.state == WarioStates.JUMP_STAY or
+					self.state == WarioStates.FALL_STAY):
 			self.velocity = 0, self.velocity[1]
-		elif (self.state == "upright-move" or
-				self.state == "crouch-move" or
-				self.state == "jump-move" or
-			  	self.state == "fall-move"):
+		elif (self.state == WarioStates.UPRIGHT_MOVE or
+				self.state == WarioStates.CROUCH_MOVE or
+				self.state == WarioStates.JUMP_MOVE or
+			  	self.state == WarioStates.FALL_MOVE):
 
-			if self.look_direction == "right":
+			if self.look_direction == RIGHT:
 				self.velocity = self.walk_speed, self.velocity[1]
 			else:
 				self.velocity = -self.walk_speed, self.velocity[1]
-		if (self.state == "jump-move") or (self.state == "jump-stay"):
+		if (self.state == WarioStates.JUMP_MOVE) or (self.state == WarioStates.JUMP_STAY):
 			self.velocity = self.velocity[0], -3
 
-		game_actor.send_message(VELOCITY, self.velocity)
+		game_actor.send_message(MSGN.VELOCITY, self.velocity)
 
 
 class WarioStatesComponent(StatesComponent):
@@ -47,11 +47,11 @@ class WarioStatesComponent(StatesComponent):
 		self.draw_state = True
 
 		self.colliding_sides = []
-		self.state = "upright-stay"
-		self.look_direction = "right"
+		self.state = WarioStates.UPRIGHT_STAY
+		self.look_direction = RIGHT
 
 		self.frame_counter = 0
-		self.state_stack = ["upright-stay"]
+		self.state_stack = [WarioStates.UPRIGHT_STAY]
 
 		self.state_stack_size = 10
 		# How many times the state should be updated, makes it possible to go from e.g. upright-stay to crouch-move
@@ -71,110 +71,110 @@ class WarioStatesComponent(StatesComponent):
 	def update(self, game_actor, engine):
 		# Update states:
 
-		if self.state == "upright-stay":
+		if self.state == WarioStates.UPRIGHT_STAY:
 			# Count up to 1800, (30 sec) and go to sleep if reached:
 			if self.count_frames(1800, True):
-				self.state = "sleep"
+				self.state = WarioStates.SLEEP
 
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
-				self.state = "upright-move"
+				self.state = WarioStates.UPRIGHT_MOVE
 			for event in engine.input.events:
 				if event.type == KEYDOWN:
 					if engine.input.smoothkeys[self.DOWN]:
-						self.state = "crouch-stay"
+						self.state = WarioStates.CROUCH_STAY
 						break
 					elif engine.input.smoothkeys[self.A]:
-						self.state = "jump-stay"
+						self.state = WarioStates.JUMP_STAY
 
-			if not "bottom" in self.colliding_sides:
-				self.state = "fall-stay"
+			if not BOTTOM in self.colliding_sides:
+				self.state = WarioStates.FALL_STAY
 
-		elif self.state == "upright-move":
+		elif self.state == WarioStates.UPRIGHT_MOVE:
 			if engine.input.smoothkeys[self.DOWN]:
-				self.state = "crouch-move"
+				self.state = WarioStates.CROUCH_MOVE
 			elif engine.input.smoothkeys[self.A]:
-				self.state = "jump-move"
+				self.state = WarioStates.JUMP_MOVE
 			if not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
-				self.state = "upright-stay"
+				self.state = WarioStates.UPRIGHT_STAY
 
-			if not "bottom" in self.colliding_sides:
-				self.state = "fall-move"
+			if not BOTTOM in self.colliding_sides:
+				self.state = WarioStates.FALL_MOVE
 
-		elif self.state == "sleep":
+		elif self.state == WarioStates.SLEEP:
 			if (engine.input.smoothkeys[self.DOWN] or
 						engine.input.smoothkeys[self.UP] or
 						engine.input.smoothkeys[self.LEFT] or
 						engine.input.smoothkeys[self.RIGHT] or
 						engine.input.smoothkeys[self.A] or
 						engine.input.smoothkeys[self.B]):
-				self.state = "upright-stay"
+				self.state = WarioStates.UPRIGHT_STAY
 
-		elif self.state == "crouch-stay":
+		elif self.state == WarioStates.CROUCH_STAY:
 			if engine.input.smoothkeys[self.LEFT] or engine.input.smoothkeys[self.RIGHT]:
-				self.state = "crouch-move"
+				self.state = WarioStates.CROUCH_MOVE
 
 			elif not engine.input.smoothkeys[self.DOWN]:
-					self.state = "upright-stay"
+					self.state = WarioStates.UPRIGHT_STAY
 
-		elif self.state == "crouch-move":
+		elif self.state == WarioStates.CROUCH_MOVE:
 			if not engine.input.smoothkeys[self.DOWN]:
-					self.state = "upright-move"
+					self.state = WarioStates.UPRIGHT_MOVE
 			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
-				self.state = "crouch-stay"
+				self.state = WarioStates.CROUCH_STAY
 
-		elif self.state == "jump-stay":
+		elif self.state == WarioStates.JUMP_STAY:
 			if not engine.input.smoothkeys[self.A]:
-				self.state = "fall-stay"
+				self.state = WarioStates.FALL_STAY
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
-					self.state = "jump-move"
+					self.state = WarioStates.JUMP_MOVE
 
-			if self.state_stack[-1] == "jump-move":
+			if self.state_stack[-1] == WarioStates.JUMP_MOVE:
 				time_over = self.count_frames(self.jump_duration, False)
 			else:
 				time_over = self.count_frames(self.jump_duration, True)
 
 			if time_over:
-				self.state = "fall-stay"
+				self.state = WarioStates.FALL_STAY
 
-		elif self.state == "jump-move":
+		elif self.state == WarioStates.JUMP_MOVE:
 			if not engine.input.smoothkeys[self.A]:
-				self.state = "fall-move"
+				self.state = WarioStates.FALL_MOVE
 			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
-				self.state = "jump-stay"
+				self.state = WarioStates.JUMP_STAY
 
-			if self.state_stack[-1] == "jump-stay":
+			if self.state_stack[-1] == WarioStates.JUMP_STAY:
 				time_over = self.count_frames(self.jump_duration, False)
 			else:
 				time_over = self.count_frames(self.jump_duration, True)
 
 			if time_over:
-				self.state = "fall-move"
+				self.state = WarioStates.FALL_MOVE
 
-		elif self.state == "fall-stay":
+		elif self.state == WarioStates.FALL_STAY:
 			if engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
-				self.state = "fall-move"
-			if "bottom" in self.colliding_sides:
-				self.state = "upright-stay"
+				self.state = WarioStates.FALL_MOVE
+			if BOTTOM in self.colliding_sides:
+				self.state = WarioStates.UPRIGHT_STAY
 
-		elif self.state == "fall-move":
+		elif self.state == WarioStates.FALL_MOVE:
 			if not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
-				self.state = "fall-stay"
+				self.state = WarioStates.FALL_STAY
 
-			if "bottom" in self.colliding_sides:
-				self.state = "upright-move"
+			if BOTTOM in self.colliding_sides:
+				self.state = WarioStates.UPRIGHT_MOVE
 
 		# Update Warios look-direction:
 		for event in engine.input.events:
 			if event.type == KEYDOWN:
 				if event.key == self.RIGHT:
-					self.look_direction = "right"
+					self.look_direction = RIGHT
 				elif event.key == self.LEFT:
-					self.look_direction = "left"
+					self.look_direction = LEFT
 
 		self.state_stack.append(self.state)
-		game_actor.send_message(WARIO_LOOKDIRECTION, self.look_direction)
-		game_actor.send_message(WARIO_STATE, self.state)
-		game_actor.send_message(WARIO_STATESTACK, self.state_stack)
+		game_actor.send_message(MSGN.WARIO_LOOKDIRECTION, self.look_direction)
+		game_actor.send_message(MSGN.WARIO_STATE, self.state)
+		game_actor.send_message(MSGN.WARIO_STATESTACK, self.state_stack)
 		if len(self.state_stack) > self.state_stack_size:
 			self.state_stack.pop(0)
 
@@ -223,11 +223,11 @@ class WalkLookComponent(VelocityComponent):
 
 	def receive_message(self, name, value):
 		VelocityComponent.receive_message(self, name, value)
-		if name == COLLISION_SIDES:
+		if name == MSGN.COLLISION_SIDES:
 			self.colliding_sides_list = value
 
 	def update(self, game_actor, engine):
-		if not "bottom" in self.colliding_sides_list:
+		if not BOTTOM in self.colliding_sides_list:
 			if self.velocity[0] > 0:
 				if not self.current_animation_name == "jump_right":
 					self.start_animation("jump_right")
