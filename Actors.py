@@ -4,8 +4,8 @@ from Components.GeneralComponents import *
 
 
 class Wario(GameActor):
-	def __init__(self, position, Input, World, Graphics):
-		GameActor.__init__(self, position, Input, World, Graphics)
+	def __init__(self, position, input, world, graphics, sound, actors):
+		GameActor.__init__(self, position, input, world, graphics, sound, actors)
 		self.rect.size = (20, 30)
 		self.components = [GravityComponent(),
 						WarioStatesComponent(),
