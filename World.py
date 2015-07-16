@@ -8,18 +8,16 @@ from Tile import *
 
 
 class World(EngineController):
-	def __init__(self, engine_wrapper):
+	def __init__(self, engine):
 		"""
 		Stores and manages all world-related data, most important of all, the tiles.
 		"""
-		self.engine_wrapper = engine_wrapper  # Save the engine-wrapper
+		super(World, self).__init__(engine)
 
 		self.grid_size = (1, 1)  # Size of grid in amount of tiles
 		self.tile_size = (1, 1)  # Size of indiv. tiles
-
 		self.tile_grid_layers = {}  # All tiles of all layers are stored in this list, see self.load_tmx()
 		self.tmx_root = None  # Root used by ET to parse, see self.load_tmx()
-
 		self.layer_names = ["background_color", "background", "sticky_background", "main"]
 		self.tile_images = utilities.split_tiled_image(pygame.image.load("tileset_n1.png").convert(), (16, 16),
 													   (225, 0, 225))

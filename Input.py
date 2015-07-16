@@ -3,13 +3,12 @@ from EngineController import *
 
 
 class Input(EngineController):
-	def __init__(self, engine_wrapper):
+	def __init__(self, engine):
 		"""
 		Handles user-Input. Should only be instanced by the main-engine.
-		:param engine_wrapper: The wrapper for the engine
+		:param engine: The complete engine
 		"""
-		super(Input, self).__init__(engine_wrapper)
-		self.engine_wrapper = engine_wrapper # Save engine-wrapper
+		super(Input, self).__init__(engine)
 		self.events = pygame.event.get() # Get pygame.events the first time
 		self.pressed_keys = pygame.key.get_pressed() # Get pressed keys the first time
 		self.focused_keys = pygame.key.get_focused() # Get focused keys the first time

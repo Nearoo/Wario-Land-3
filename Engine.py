@@ -9,18 +9,6 @@ from GameActorController import *
 from Actors import *
 
 
-class EngineWrapper:
-	"""
-	Only exists to make it impossible for the components
-	to access things of the engine they shouldn't. It only contains
-	the instances of important things like input, world, or graphics.
-	"""
-	input = None
-	world = None
-	graphics = None
-	sound = None
-	actors = None
-
 class Engine:
 	def __init__(self, screen_size, fps):
 		self._tmx_root = None  # Will be used to store the currently loaded tmx-file:
@@ -28,25 +16,16 @@ class Engine:
 		self._CLOCK = pygame.time.Clock() # Create pygame.Clock for fps-control
 		self._draw_tile_ids = False # DEBUG: Draw all ids:
 
-		# Create the engine-wrapper:
-		self.engine_wrapper = EngineWrapper
 		# Create instance of Graphics-Engine:
-		self.graphics = Graphics(self.engine_wrapper,screen_size)
+		self.graphics = Graphics(self,screen_size)
 		# Create instance of World:
-		self.world = World(self.engine_wrapper)
+		self.world = World(self)
 		# Create instance of input-engine
-		self.input = Input(self.engine_wrapper)
+		self.input = Input(self)
 		# Create actors-controller
-		self.actors = GameActorController(self.engine_wrapper)
+		self.actors = GameActorController(self)
 		# Create sound-controller (not jet programmed...)
 		self.sound = None
-
-		# Update references of engine_wrapper:
-		self.engine_wrapper.graphics = self.graphics
-		self.engine_wrapper.world = self.world
-		self.engine_wrapper.actors = self.actors
-		self.engine_wrapper.input = self.input
-		self.engine_wrapper.sound = self.sound
 
 		# Finally, first map (temporary):
 		self._load_tmx("Forest_N1_1.tmx")
@@ -78,7 +57,7 @@ class Engine:
 		"""
 
 		# Empty self.actors:
-		self.actors = GameActorController(self.engine_wrapper)
+		self.actors = GameActorController(self)
 		# TODO: Find a way to empty self.world
 
 		# Open and parse the tmx-file
