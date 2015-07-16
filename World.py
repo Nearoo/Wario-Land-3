@@ -25,11 +25,10 @@ class World(EngineController):
 		self.tmx_root = None  # Root used by ET to parse, see self.load_tmx()
 
 		self.layer_names = ["background_color", "background", "sticky_background", "main"]
-
-		self.tile_types = {}
 		self.tile_images = utilities.split_tiled_image(pygame.image.load("tileset_n1.png").convert(), (16, 16),
 													   (225, 0, 225))
 		self.tiles = [Tile("deco", [img]) for img in self.tile_images]
+		self.tile_by_types = {tile.material_group: [] for tile in self.tiles}
 
 	def set_tile_size(self, tile_size):
 		self.tile_size = tile_size
@@ -159,6 +158,11 @@ class World(EngineController):
 		if layer not in self.tile_grid_layers:
 			self.tile_grid_layers[layer] = []
 		self.tile_grid_layers[layer].append(new_tile)
+		tile_id = len(self.tile_grid_layers[layer])
+		if new_tile.material_group not in self.tile_by_types:
+			self.tile_by_types[new_tile.material_group] = [tile_id]
+		else:
+			self.tile_by_types[new_tile.material_group].append(tile_id)
 
 	def get_grid(self):
 		return self.tile_grid_layers
