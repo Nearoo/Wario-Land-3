@@ -32,3 +32,5 @@ class WarioStates:
 	GOTO_SLEEP = 8
 	WAKE_UP = 9
 	SLEEP = 10
+
+	TURN = 11

@@ -25,7 +25,8 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 		if (self.state == WarioStates.UPRIGHT_STAY or
 					self.state == WarioStates.CROUCH_STAY or
 					self.state == WarioStates.JUMP_STAY or
-					self.state == WarioStates.FALL_STAY):
+					self.state == WarioStates.FALL_STAY or
+					self.state == WarioStates.TURN):
 			self.velocity = 0, self.velocity[1]
 		elif (self.state == WarioStates.UPRIGHT_MOVE or
 				self.state == WarioStates.CROUCH_MOVE or
@@ -169,9 +170,17 @@ class WarioStatesComponent(StatesComponent):
 		for event in engine.input.events:
 			if event.type == KEYDOWN:
 				if event.key == self.RIGHT:
-					self.look_direction = RIGHT
+					if (self.state == WarioStates.UPRIGHT_STAY or self.state == WarioStates.UPRIGHT_MOVE or \
+						self.state == WarioStates.TURN) and self.look_direction == LEFT:
+						self.state = WarioStates.TURN
+					else:
+						self.look_direction = RIGHT
 				elif event.key == self.LEFT:
-					self.look_direction = LEFT
+					if (self.state == WarioStates.UPRIGHT_STAY or self.state == WarioStates.UPRIGHT_MOVE or \
+						self.state == WarioStates.TURN) and self.look_direction == RIGHT:
+						self.state = WarioStates.TURN
+					else:
+						self.look_direction = LEFT
 
 		self.state_stack.append(self.state)
 		game_actor.send_message(MSGN.WARIO_LOOKDIRECTION, self.look_direction)
@@ -216,7 +225,7 @@ class LookComponent(StatesComponent):
 		self.animations["jump_right"] = Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1)
 		self.animations["jump_left"] = self.animations["jump_right"].make_x_mirror()
 
-		# Load images for the next coupple of animations:
+		# Load images for the next couple of animations:
 		gotosleep_imgs = split_tiled_image(pygame.image.load("images\\ANI_Wario_gotosleep_r.png").convert_alpha(), (28, 30))
 
 		self.animations["gotosleep_right"] = Animation(gotosleep_imgs, [(0, 15), (1, 15), (2, 15), (3, 15), (4, 15)])
@@ -228,6 +237,10 @@ class LookComponent(StatesComponent):
 		self.animations["wakeup_right"] = Animation(gotosleep_imgs, [(4, 25), (3, 25), (2, 25), (1, 25), (0, 25)])
 		self.animations["wakeup_left"] = self.animations["wakeup_right"].make_x_mirror()
 
+		turn_around_img = split_tiled_image(pygame.image.load("images\\ANI_Wario_turn.png").convert_alpha(), (28, 29), (225, 0, 225))
+		self.animations["turn_left"] = Animation(turn_around_img, [(3, 4), (2, 4), (1, 4)])
+		self.animations["turn_right"] = Animation(turn_around_img, [(1, 4), (2, 4), (3, 4)])
+
 		# Save the current animation
 		self.current_animation = self.animations["stand_right"]
 		# Save the last animation to check if a new animation has started:
@@ -237,9 +250,14 @@ class LookComponent(StatesComponent):
 
 	def receive_message(self, name, value):
 		super(LookComponent, self).receive_message(name, value)
+		if name == MSGN.WARIO_LOOKDIRECTION:
+			self.look_direction = value
+		elif name == MSGN.WARIO_STATE:
+			self.state = value
 
 	def update(self, game_actor, engine):
 		ld = "right" if self.look_direction == RIGHT else "left"
+
 		if self.state == WarioStates.UPRIGHT_STAY:
 			self.play_animation("stand_"+ld)
 		elif self.state == WarioStates.UPRIGHT_MOVE:
@@ -262,6 +280,15 @@ class LookComponent(StatesComponent):
 				self.play_animation("stand_"+ld)
 				self.state = WarioStates.UPRIGHT_STAY
 				game_actor.send_message(MSGN.WARIO_STATE, self.state)
+
+		elif self.state == WarioStates.TURN:
+			side = "left" if self.look_direction == RIGHT else "right"
+			self.play_animation("turn_"+side)
+			if self.current_animation.get_spritenr() == 2:
+				self.look_direction = RIGHT if side == "right" else LEFT
+				self.state = WarioStates.UPRIGHT_STAY
+				game_actor.send_message(MSGN.WARIO_STATE, self.state)
+				game_actor.send_message(MSGN.WARIO_LOOKDIRECTION, self.look_direction)
 
 		# Update the current animation:
 		self.current_animation.update()
