@@ -1,4 +1,5 @@
 from BasicComponents import *
+from locals import *
 
 
 class SolidCollisionComponent(VelocityComponent):
@@ -15,7 +16,7 @@ class SolidCollisionComponent(VelocityComponent):
 		# Move the copy with velocity, so we can see how the rect would look like after applied velocity:
 		rect_copy.move_ip(self.velocity)
 		# Get a colliding rect:
-		colliding_rects = engine.world.get_colliding_rects("solid", rect_copy)
+		colliding_rects = engine.world.get_colliding_rects(Layers.main, "solid", rect_copy)
 		# Here, the side on which the game actor is colliding is stored (LEFT, RIGHT etc...)
 		colliding_side = None
 		# Create a velocity_multiplier with which the velocity will be multiplied in the end

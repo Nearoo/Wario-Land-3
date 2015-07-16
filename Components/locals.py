@@ -5,6 +5,14 @@ LEFT = 2
 TOP = 3
 BOTTOM = 4
 
+# Names of layers
+class Layers:
+	game_actors = 4
+	main = 3
+	sticky_background = 2
+	background = 1
+	background_color = 0
+
 # Message names: (MSGNs)
 class MSGN:
 	COLLISION_SIDES = 0
