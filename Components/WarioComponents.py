@@ -18,6 +18,8 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 		self.walk_speed = 1
 		self.jump_speed = 3
 
+		self.jumped_before = 0
+
 	def receive_message(self, name, value):
 		super(WarioMoveComponent, self).receive_message(name, value)
 		if name == MSGN.VELOCITY:
@@ -40,7 +42,17 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 			else:
 				self.velocity = -self.walk_speed, self.velocity[1]
 		if (self.state == WarioStates.JUMP_MOVE) or (self.state == WarioStates.JUMP_STAY):
-			self.velocity = self.velocity[0], -3
+			if self.jumped_before > 18:
+				self.velocity = self.velocity[0], 0
+			elif self.jumped_before > 10:
+				self.velocity = self.velocity[0], -1
+			elif self.jumped_before > 6:
+				self.velocity = self.velocity[0], -2
+			else:
+				self.velocity = self.velocity[0], -3
+			self.jumped_before += 1
+		else:
+			self.jumped_before = 0
 
 		game_actor.send_message(MSGN.VELOCITY, self.velocity)
 
