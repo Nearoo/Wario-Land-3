@@ -4,7 +4,7 @@ from BasicComponents import *
 class SolidCollisionComponent(VelocityComponent):
 	def update(self, game_actor, engine):
 		# Debug: Draw rects and text..
-		draw_things = False
+		draw_things = True
 		# Debug: Draw rect-number
 		rect_nr = 0
 		# Clear the list which stores what sides are colliding:
@@ -52,25 +52,25 @@ class SolidCollisionComponent(VelocityComponent):
 			if draw_things: engine.graphics.draw_rect(colliding_rect, (43, 192, 225), 2)
 			# Now determine if another rect is on the side game_actor is colliding with, and if it is, ignore the collision
 			if colliding_side == TOP:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (0, 1)).material_group != "solid":
 					velocity_multiplier[1] = 0
 					colliding_sides_list.append(colliding_side)
 					if draw_things:
 						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 			elif colliding_side == BOTTOM:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group != "solid":
 					velocity_multiplier[1] = 0
 					if draw_things:
 						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == RIGHT:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group != "solid":
 					velocity_multiplier[0] = 0
 					if draw_things:
 						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == LEFT:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (0, 1)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group != "solid":
 					velocity_multiplier[0] = 0
 					if draw_things:
 						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)

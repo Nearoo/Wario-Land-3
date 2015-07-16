@@ -184,7 +184,7 @@
   </tile>
   <tile id="36">
    <properties>
-    <property name="material_group" value=""/>
+    <property name="material_group" value="solid"/>
    </properties>
   </tile>
   <tile id="37">
@@ -492,6 +492,6 @@
 </data>
  </layer>
  <objectgroup name="main">
-  <object id="18" name="Wario" gid="102" x="36" y="219.001" width="20" height="30"/>
+  <object id="18" name="Wario" gid="102" x="398" y="84.001" width="20" height="30"/>
  </objectgroup>
 </map>

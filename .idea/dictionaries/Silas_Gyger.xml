@@ -10,6 +10,8 @@
       <w>pygame</w>
       <w>rects</w>
       <w>statestack</w>
+      <w>tileset</w>
+      <w>tilesets</w>
       <w>wario</w>
     </words>
   </dictionary>
