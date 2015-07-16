@@ -88,10 +88,12 @@ class Engine:
 
 		# Get map-tag-attributes:
 		map_attributes = self.tmx_root.attrib
-		# Get gridsize (in tiles)
+		# Get grid-size (in tiles)
 		grid_size = (int(map_attributes["width"]), int(map_attributes["height"]))
-		# Get tilesize (in pixels)
+		self.world.set_gid_size(grid_size)
+		# Get tile-size (in pixels)
 		tile_size = (int(map_attributes["tilewidth"]), int(map_attributes["tileheight"]))
+		self.world.set_tile_size(tile_size)
 		# Get the tileset-image:
 		tile_images = utilities.split_tiled_image(pygame.image.load("tileset_n1.png").convert(), (16, 16), (225, 0, 225))
 		# Create Tile-instances:
@@ -103,47 +105,30 @@ class Engine:
 				for tile in tileset.findall("tile"):
 					# For property in tile:
 					for property in tile.find("properties").findall("property"): 
-						# Update tile-property. (What exactly is done is class-specific.)
-						self.tiles[int(tile.attrib["id"])].set_property(property.attrib["name"], property.attrib["value"])
+						# Update tile-property. (What exactly is done is tile-specific.)
+						self.world.set_tile_property(int(tile.attrib["id"]), property.attrib["name"], property.attrib["value"])
 
-		# The next coupple of lines try to fill following list which contains all information
+		# The next couple of lines try to fill following list which contains all information
 		#  about what tile are where on which layer:
 		tile_grid_layers = []
 
 		# Iterate over all layers
-		for layer in self.tmx_root.findall("layer"):
+		all_layers = self.tmx_root.findall("layer")
+		for layer in range(len(all_layers)):
 			# Save the raw csv-data
-			csv_data = layer.find("data").text
-			# Create a tmp-list representing one layer
-			tmp_list = []
+			csv_data = all_layers[layer].find("data").text
 			# Iterate over the rows of the raw-csv-data,
-			for row in csv_data.split("\n"):
-				# Make sure no empty lists get appended
-				if not row == "":
-					splitted_row = row.split(",")
-					# Make sure again no empty elements get appended
-					if not splitted_row[-1] == "":
-						# Append x row
-						tmp_list.append(splitted_row)
-					else:
-						# Append x row
-						tmp_list.append(splitted_row[:-1])
-			
-			# Add the tmplist as a whole to the tile_grid_layers-var
-			tile_grid_layers.append(tmp_list)
-
-			# In the end, the layer looks like this (tuples represent coords of tiles): [[(1, 0), (2, 0), (3, 0), (4, 0) ...], [(1, 1), (2, 1)...]...]
-			# Or, expressed differently: [[x-axis-1], [x-axis-2]...]
-
-		# Iterate again over all elements of self.tile_grid_layers
-		for layer in range(len(tile_grid_layers)):
-			for y in range(len(tile_grid_layers[layer])):
-				for x in range(len(tile_grid_layers[layer][y])):
-					# Exchange each element (each an int) with its corresponding tile-object
-					tile_grid_layers[layer][y][x] = self.tiles[int(tile_grid_layers[layer][y][x])-1]
-
-		# Finally pass this list to the world:
-		self.world.set_world_data(tile_grid_layers, grid_size, tile_size)
+			splitted_data = csv_data.split("\n")
+			for row in range(len(splitted_data)):
+				# Make sure the row isn't empty:
+				if not splitted_data[row] == "":
+					splitted_row = splitted_data[row].split(",")
+					for column in range(len(splitted_row)):
+						# Make sure the tile isn't empty:
+						if not splitted_row[column] == "":
+							# Create the tile
+							position = map(lambda x, y: x*y, (column, row-1), tile_size)
+							self.world.create_tile(layer, position, tile_size, int(splitted_row[column])-1)
 
 		# Then, parse the objectgroup-layers
 		self.actors = GameActorController(self.engine_wrapper)
@@ -157,7 +142,8 @@ class Engine:
 					actor_name = object.attrib["name"]
 					position = (float(object.attrib["x"]), float(object.attrib["y"])-float(object.attrib["height"]))
 					self.actors.spawn_game_actor(actor_name, position, self.input, self.world, self.graphics, self.sound)
-					# self.spawn_gameactor_by_name(object.attrib["name"], (float(object.attrib["x"]), float(object.attrib["y"])-float(object.attrib["height"])))
+					# self.spawn_gameactor_by_name(object.attrib["name"], (float(object.attrib["x"]),
+					# float(object.attrib["y"])-float(object.attrib["height"])))
 
 	def spawn_gameactor_by_name(self, name, position):
 		"""
@@ -179,9 +165,6 @@ class Engine:
 				sys.exit()
 
 	def draw_world(self):
-		for layer in range(self.world.get_layer_amount()):
-			for x in range(self.world.get_grid_size()[0]):
-				for y in range(self.world.get_grid_size()[1]):
-					position = (x*self.world.get_tile_size()[0], y*self.world.get_tile_size()[1])
-					self.graphics.blit(self.world.get_Tile(layer, y, x).get_surface(), position)
-					if self.draw_tile_ids: self.graphics.draw_small_text(y*self.world.get_grid_size()[0]+x, position, (225, 225, 225),)
+		for layer in self.world.get_grid().values():
+			for tile in layer:
+				self.graphics.blit(tile.get_surface(), tile.get_rect())

@@ -33,6 +33,8 @@ class Tile(object):
 		self.material_group = material_group
 		# Create the animation-instance containing all surfaces
 		self.animation = Animation(tiles_list, fpi)
+		self.animation.update()
+		self.rect = pygame.Rect((0, 0), tiles_list[0].get_size())
 
 	def update(self):
 		self.animation.update()
@@ -42,6 +44,9 @@ class Tile(object):
 
 	def get_solid(self):
 		return solid
+
+	def get_rect(self):
+		return self.rect
 
 	def set_property(self, name, value):
 		if name == "material_group":
