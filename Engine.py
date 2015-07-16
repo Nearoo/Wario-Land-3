@@ -159,6 +159,6 @@ class Engine:
 				sys.exit()
 
 	def _draw_world(self):
-		for layer in self.world.get_grid().values():
+		for layer in self.world.get_full_grid().values():
 			for tile in layer:
 				self.graphics.blit(tile.get_surface(), tile.get_rect())
