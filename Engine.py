@@ -1,19 +1,12 @@
 import sys
+import xml.etree.ElementTree as ET
 
-from globals import pygame
-from pygame.locals import *
 
 from Input import *
 from World import *
 from Graphics import *
-from Tile import *
 from GameActorController import *
-
 from Actors import *
-
-import utilities
-
-import xml.etree.ElementTree as ET
 
 
 class EngineWrapper:
