@@ -7,6 +7,8 @@ from globals import pygame
 from BasicComponents import *
 from locals import *
 
+import logging
+
 
 class WarioMoveComponent(StatesComponent, VelocityComponent):
 	def __init__(self):
@@ -73,20 +75,20 @@ class WarioStatesComponent(StatesComponent):
 		# Update states:
 
 		if self.state == WarioStates.UPRIGHT_STAY:
+			# Reset frame-counter if Wario wasn't standing before:
+			if self.state_stack[-1] != WarioStates.UPRIGHT_STAY:
+				self.frame_counter = 0
 			# Count up to 1800, (30 sec) and go to sleep if reached:
-			if self.count_frames(1800, True):
+			if self.count_frames(1800):
 				# The animation-component must handle this!!
 				self.state = WarioStates.GOTO_SLEEP
 
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.UPRIGHT_MOVE
-			for event in engine.input.events:
-				if event.type == KEYDOWN:
-					if engine.input.smoothkeys[self.DOWN]:
-						self.state = WarioStates.CROUCH_STAY
-						break
-					elif engine.input.smoothkeys[self.A]:
-						self.state = WarioStates.JUMP_STAY
+			elif engine.input.smoothkeys[self.DOWN]:
+				self.state = WarioStates.CROUCH_STAY
+			elif engine.input.smoothkeys[self.A]:
+				self.state = WarioStates.JUMP_STAY
 
 			if not BOTTOM in self.colliding_sides:
 				self.state = WarioStates.FALL_STAY
@@ -131,12 +133,11 @@ class WarioStatesComponent(StatesComponent):
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 					self.state = WarioStates.JUMP_MOVE
 
-			if self.state_stack[-1] == WarioStates.JUMP_MOVE or self.state_stack[-1] == WarioStates.JUMP_STAY:
-				time_over = self.count_frames(self.jump_duration, False)
-			else:
-				time_over = self.count_frames(self.jump_duration, True)
-
-			if time_over:
+			# [-2] because you want to catch if the state changed, but if it changes, the change is already appended
+			# to the statestack!
+			if self.state_stack[-2] != WarioStates.JUMP_MOVE and self.state_stack[-2] != WarioStates.JUMP_STAY:
+				self.frame_counter = 0
+			if self.count_frames(self.jump_duration):
 				self.state = WarioStates.FALL_STAY
 
 		elif self.state == WarioStates.JUMP_MOVE:
@@ -144,13 +145,10 @@ class WarioStatesComponent(StatesComponent):
 				self.state = WarioStates.FALL_MOVE
 			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.JUMP_STAY
-
-			if self.state_stack[-1] == WarioStates.JUMP_STAY or self.state_stack[-1] == WarioStates.JUMP_MOVE:
-				time_over = self.count_frames(self.jump_duration, False)
-			else:
-				time_over = self.count_frames(self.jump_duration, True)
-
-			if time_over:
+			# Same as in JUMP_STAY-part
+			if self.state_stack[-2] != WarioStates.JUMP_MOVE and self.state_stack[-2] != WarioStates.JUMP_STAY:
+				self.frame_counter = 0
+			if self.count_frames(self.jump_duration):
 				self.state = WarioStates.FALL_MOVE
 
 		elif self.state == WarioStates.FALL_STAY:
@@ -182,7 +180,10 @@ class WarioStatesComponent(StatesComponent):
 					else:
 						self.look_direction = LEFT
 
+		# Append state to state-stack:
 		self.state_stack.append(self.state)
+
+		# Send the updates:
 		game_actor.send_message(MSGN.WARIO_LOOKDIRECTION, self.look_direction)
 		game_actor.send_message(MSGN.WARIO_STATE, self.state)
 		game_actor.send_message(MSGN.WARIO_STATESTACK, self.state_stack)
@@ -192,15 +193,13 @@ class WarioStatesComponent(StatesComponent):
 		if self.draw_state:
 			engine.graphics.draw_text(self.state, (20, 20), (225, 0, 0))
 
-	def count_frames(self, frame_amount, reset_if_new_state=True):
-		"""Automatically counts frames to the given frame_amount.
-		If the state changed recently and reset_if_new_state is True, the frame-counter is reset to 0."""
+	def count_frames(self, frame_amount):
+		"""
+		Automatically counts frames to the given frame_amount.
+		Frames need to be reset by user.
+		"""
 		# Increase counter by 1
 		self.frame_counter += 1
-		# Reset counter if state changed recently:
-		if reset_if_new_state and self.state_stack[-1] != self.state:
-			self.frame_counter = 0
-
 		# If the needed amount of frames is reached, return true, otherwise false
 		if self.frame_counter >= frame_amount:
 			self.frame_counter = 0
