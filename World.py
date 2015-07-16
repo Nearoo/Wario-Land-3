@@ -8,14 +8,11 @@ from Tile import *
 
 
 class World(EngineController):
-	"""
-	Stores all level-related data like tile-position, world-collision etc.
-	Before something can be done, a Tiled-levelfile must be loaded, using the "load_tmx_method.
-	"""
-
 	def __init__(self, engine_wrapper):
-		# Update the engine_wrapper:
-		self.engine_wrapper = engine_wrapper
+		"""
+		Stores and manages all world-related data, most important of all, the tiles.
+		"""
+		self.engine_wrapper = engine_wrapper  # Save the engine-wrapper
 
 		self.grid_size = (1, 1)  # Size of grid in amount of tiles
 		self.tile_size = (1, 1)  # Size of indiv. tiles
@@ -29,66 +26,126 @@ class World(EngineController):
 		self.tiles = [Tile("deco", [img]) for img in self.tile_images]
 		self.tile_by_types = {tile.material_group: [] for tile in self.tiles}
 
-	def set_tile_size(self, tile_size):
-		self.tile_size = tile_size
+	def _get_rects_with_material_group(self, layer, material_group):
+		"""
+		Returns all tiles of a layer that have a certain material group or multiple material group
+		:param layer: The layer on which the rects should be
+		:param material_group: material group or list of material-groups
+		:return: List of tiles with that/these material-group/s
+		"""
+		# Make list out of material_group
+		material_groups = [material_group] if type(material_group) is not list else material_group
+		# Catch possible errors:
+		assert layer in self.tile_grid_layers, "Layer %i doesn't exist." % layer
 
-	def set_gid_size(self, grid_size):
-		self.grid_size = grid_size
+		# Create return-list
+		return_list = []
+		for material_group in material_groups:
+			return_list.extend([self.tile_grid_layers[layer][i].rect for i in self.tile_by_types[layer][material_group]])
+
+		return return_list
+
+	def _get_tile_id_by_pos(self, pos):
+		"""
+		returns a tile-id based on its position
+		:param pos: The position of the wanted tile in pixels
+		:return: Tile_id
+		"""
+		return pos[0]/self.tile_size[0]+(pos[1]/self.tile_size[1])*self.grid_size[0]
+
+	def _get_tile_pos_by_id(self, tile_id):
+		"""
+		Returns the position of a tile in pixels by its id
+		:param tile_id: The id of the wanted tile-position
+		:return: The position of the tile
+		"""
+		x = (tile_id % self.grid_size[0])*self.tile_size[0]
+		y = (tile_id-(tile_id%self.grid_size[0]))/self.grid_size[0]*self.tile_size[1]
+
+		return x, y
+
+	def _get_layer_id(self, name):
+		if type(name) is int:
+			return name
+
+		else:
+			return self.layer_names.index(name)
+
+	def update(self):
+		pass
 
 	def get_tile_by_material_group(self, material_group):
+		"""
+		Returns the base-tile of a material-group
+		:param material_group: The material group desired
+		:return: Tile-instance
+		"""
+
 		for tile in self.tiles:
 			if tile.material_group == type:
 				return tile
+		else:
+			assert material_group in self.tiles, "Material-group unknown."
 
-	def get_colliding_rect(self, material_group, rect):
+	def get_colliding_rect(self, layer, material_group, rect):
 		"""
-		Returns a the rect of a tile with the block-groupd block_group that collides with the rect redt.
-		TODO: Improve this. Maybe make self.tile_grid_layers a dict that is sorted by block type, maybe add a rect to every tile, 
-			add an additional abstraction layer for tiles, a class that contains images and one that contains xy coordinates?
+		Returns a tile-instance that collides with a given rect and has a certain material_group.
+		Returns None if no collision happens.
+		:param layer: The layer on which the tiles should be checked.
+		:param material_group: The desired material_group.
+		:param rect: The colliding rect.
+		:return: A tile instance that collides with the given rect.
 		"""
+
+		# Catch possible errors:
+		assert layer in self.tile_by_types, "Layer does not exist."
+		if material_group not in self.tile_by_types[layer]: return None
+
+		# First, get a list of all rects that have the desired material-group:
+		rects_with_material_group = self._get_rects_with_material_group(layer, material_group)
+		# ...and let pygame do the work. Pygame is in C, so it's much faster than doing it in python...
+		colliding_index = rect.collidelist(rects_with_material_group)
+		# Return None if no collision happens, else the colliding rect:
+		return None if colliding_index == -1 else rects_with_material_group[colliding_index]
+
+	def get_colliding_rects(self, layer, material_group, rect):
+		"""
+		Returns a list of tile-instances that collide with a given rect and have a certain material-group.
+		Returns an empty list if no collision happens.
+		:param layer: The layer on which the tiles should be checked.
+		:param material_group: The desired material_group.
+		:param rect: The colliding rect.
+		:return: List of tile-instances that collide with the given rect
+		"""
+		# Catch possible errors:
+		assert layer in self.tile_by_types, "Layer does not exist."
+		if material_group not in self.tile_by_types[layer]: return []
+
 		# First get the rects of the demanded material group
-		material_group_rects = self.get_material_group_rects(material_group)
+		rects_with_material_group = self._get_rects_with_material_group(layer, material_group)
 		# ...and let python do the work. Python is in C, so it's much faster than doing it in python...
-		colliding_index = rect.collidelist(material_group_rects)
-		return None if colliding_index == -1 else material_group_rects[colliding_index]
-
-	def get_colliding_rects(self, material_group, rect):
-		"""TODO: See self.get_colliding_rect()"""
-		# First get the rects of the demanded material group
-		material_group_rects = self.get_material_group_rects(material_group)
-		# ...and let python do the work. Python is in C, so it's much faster than doing it in python...
-		colliding_index = rect.collidelistall(material_group_rects)
-		return map(lambda index: material_group_rects[index], colliding_index)
-
-	def get_material_group_rects(self, material_group):
-		"""Returns all rects of all tiles that correspond to a certain material-group material_group.
-		TODO: See get_colliding_rect()"""
-
-		material_group = [material_group] if type(material_group) != list else material_group
-		tmp_list = []
-		for layer in self.tile_grid_layers.values():
-			for tile in layer:
-				if tile.material_group in material_group:
-					# Create a rect out of the tile and add it to the list:
-					tmp_list.append(tile.rect)
-		return tmp_list
+		colliding_index = rect.collidelistall(rects_with_material_group)
+		return map(lambda index: rects_with_material_group[index], colliding_index)
 
 	def get_tile_relative_to(self, layer, rect, offset):
-		"""Returns the material of the tile at position of rect offset with offset"""
-		layer = self.get_layer_id(layer)
-		# Calculate the postion of the wanted rect:
+		"""
+		Returns the tile with an offset to a given tile.
+		:param layer: The layer in which the tile should be
+		:param rect: The rect of the tile
+		:param offset: The offset which the tile should have relative to the given rect
+		:return: Tile with the offset
+		"""
+		layer = self._get_layer_id(layer)
+		# Calculate the position of the wanted rect:
 		pos_of_wanted_rect = map(lambda x, y, z: x+y*z, rect.topleft, self.tile_size, offset)
-		# Temporary: Calculate the maximum position a tile can have:
+		# Calculate the maximum position a tile can have:
 		max_pos = map(lambda x, y: x*y, self.tile_size, self.grid_size)
-		# If index of wanted tile isn't there, return the first tile (should actually be a tile with no type
+		# If wanted tile is outside the map (=doesn't exist), return a deco-tile:
 		if pos_of_wanted_rect[0] > max_pos[0] or pos_of_wanted_rect[0] < 0 or \
 			pos_of_wanted_rect[1] > max_pos[1] or pos_of_wanted_rect[1] < 0:
 			return self.get_tile_by_material_group("deco")
 		else:
-			return self.tile_grid_layers[layer][self.get_tile_id_by_pos(pos_of_wanted_rect)]
-
-	def update(self):
-		pass
+			return self.tile_grid_layers[layer][self._get_tile_id_by_pos(pos_of_wanted_rect)]
 
 	def get_tile_size(self):
 		"""Returns size of tiles in pixels"""
@@ -98,7 +155,7 @@ class World(EngineController):
 		"""Returns gridsize in number of tiles"""
 		return self.grid_size
 
-	def get_Tile(self, layer, pos_or_id):
+	def get_tile(self, layer, pos_or_id):
 		"""
 		Returns the tile with either position or id "pos_or_id", depending on the type of pos_or_id.
 		:param layer: The layer on which the tile is located
@@ -110,59 +167,59 @@ class World(EngineController):
 		# If pos_or_id is a position:
 		if type(pos_or_id) is tuple:
 			# Convert tile_id from position to id:
-			tile_id = self.get_tile_id_by_pos(pos_or_id)
+			tile_id = self._get_tile_id_by_pos(pos_or_id)
 		else:
 			# Else just take pos_or_id
 			tile_id = pos_or_id
 		# Return the wanted tile
 		return self.tile_grid_layers[layer][tile_id]
 
-	def get_tile_id_by_pos(self, pos):
-		"""
-		returns a tile-id based on its position
-		:param pos: The position of the wanted tile in pixels
-		:return: Tile_id
-		"""
-		return pos[0]/self.tile_size[0]+(pos[1]/self.tile_size[1])*self.grid_size[0]
-
-	def get_tile_pos_by_id(self, tile_id):
-		"""
-		Returns the position of a tile in pixels by its id
-		:param tile_id: The id of the wanted tile-position
-		:return: The position of the tile
-		"""
-		x = (tile_id % self.grid_size[0])*self.tile_size[0]
-		y = (tile_id-(tile_id%self.grid_size[0]))/self.grid_size[0]*self.tile_size[1]
-
-		return x, y
-
 	def get_layer_amount(self):
-		"""Returns the total amount of layers"""
+		"""
+		Returns the total amount of layers
+		"""
 		return len(self.tile_grid_layers)
-
-	def get_layer_id(self, name):
-		if type(name) is int:
-			return name
-
-		else:
-			return self.layer_names.index(name)
 
 	def set_tile_property(self, tile_id, property_name, property_value):
 		self.tiles[tile_id].set_property(property_name, property_value)
 
+	def get_full_grid(self):
+		return self.tile_grid_layers
+
 	def create_tile(self, layer, position, size, tile_id):
 		# Create new tile - copy.copy only makes a shallow copy, so animation-instance is the same as original
 		new_tile = copy.copy(self.tiles[tile_id])
+		# Update the rect of the new tile:
 		new_tile.rect = pygame.Rect(position, size)
+		# Create the layer if he doesn't already exist:
 		if layer not in self.tile_grid_layers:
 			self.tile_grid_layers[layer] = []
+		# Append the new tile to this layer
 		self.tile_grid_layers[layer].append(new_tile)
-		tile_id = len(self.tile_grid_layers[layer])
-		if new_tile.material_group not in self.tile_by_types:
-			self.tile_by_types[new_tile.material_group] = [tile_id]
-		else:
-			self.tile_by_types[new_tile.material_group].append(tile_id)
 
-	def get_grid(self):
-		return self.tile_grid_layers
+		# Update self.tile_by_types:
+		# Get the id of the current tile (with which the tile can be accessed in self.tile_grid_layers:
+		tile_id = len(self.tile_grid_layers[layer])-1
+		# If layer doesn't exist, create it:
+		if layer not in self.tile_by_types:
+			self.tile_by_types[layer] = {}
+		# If material_group doesn't exist, create it:
+		if new_tile.material_group not in self.tile_by_types[layer]:
+			self.tile_by_types[layer][new_tile.material_group] = []
+		# Append tile:
+		self.tile_by_types[layer][new_tile.material_group].append(tile_id)
 
+	def set_tile_size(self, tile_size):
+		"""
+		Set the size of every tile in the grid.
+		:param tile_size: The size the grid-tiles should have
+		:return: None
+		"""
+		self.tile_size = tile_size
+
+	def set_gid_size(self, grid_size):
+		"""
+		:param grid_size: Size of grid in tiles
+		:return: None
+		"""
+		self.grid_size = grid_size
