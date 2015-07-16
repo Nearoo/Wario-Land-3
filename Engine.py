@@ -39,7 +39,6 @@ class Engine:
 
 		# Create the engine-wrapper:
 		self.engine_wrapper = EngineWrapper
-
 		# Create instance of Graphics-Engine:
 		self.graphics = Graphics(self.engine_wrapper,screen_size)
 		# Create instance of World:
@@ -50,6 +49,13 @@ class Engine:
 		self.actors = GameActorController(self.engine_wrapper)
 		# Create sound-controller (not jet programmed...)
 		self.sound = None
+
+		# Update references of engine_wrapper:
+		self.engine_wrapper.graphics = self.graphics
+		self.engine_wrapper.world = self.world
+		self.engine_wrapper.actors = self.actors
+		self.engine_wrapper.input = self.input
+		self.engine_wrapper.sound = self.sound
 
 		# Create pygame.Clock for fps-control
 		self.CLOCK = pygame.time.Clock()

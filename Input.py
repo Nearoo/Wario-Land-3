@@ -6,7 +6,6 @@ class Input(EngineController):
 	def __init__(self, engine_wrapper):
 		# Update the engine_wrapper:
 		self.engine_wrapper = engine_wrapper
-		self.engine_wrapper.input = self
 
 		self.events = pygame.event.get()
 		self.pressed_keys = pygame.key.get_pressed()

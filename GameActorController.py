@@ -10,8 +10,6 @@ class GameActorController:
 	def __init__(self, engine_wrapper, log_level = logging.ERROR):
 		# Update the engine_wrapper:
 		self.engine_wrapper = engine_wrapper
-		self.engine_wrapper.actors = self
-
 		# All game-actors, sorted by instance id (id())
 		self.actors = {}
 		# Create deletion buffer-list, so actors can't delete while updating:

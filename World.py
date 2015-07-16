@@ -16,7 +16,6 @@ class World(EngineController):
 	def __init__(self, engine_wrapper):
 		# Update the engine_wrapper:
 		self.engine_wrapper = engine_wrapper
-		self.engine_wrapper.world = self
 
 		self.grid_size = (1, 1)  # Size of grid in amount of tiles
 		self.tile_size = (1, 1)  # Size of indiv. tiles
