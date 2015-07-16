@@ -1,15 +1,15 @@
 from Actors import *
 import logging
+from EngineController import *
 
 
-class GameActorController:
+class GameActorController(EngineController):
 	"""
 	Cares for and contains all game-actors active or inactive in the game.
 	"""
 
-	def __init__(self, engine_wrapper, log_level = logging.ERROR):
-		# Update the engine_wrapper:
-		self.engine_wrapper = engine_wrapper
+	def __init__(self, engine, log_level = logging.ERROR):
+		super(GameActorController, self).__init__(engine)
 		# All game-actors, sorted by instance id (id())
 		self.actors = {}
 		# Create deletion buffer-list, so actors can't delete while updating:
@@ -50,7 +50,7 @@ class GameActorController:
 		# Check if game_actor_type is existent:
 		assert actor_type in self.game_actor_types, "Unknown GameActor-type \"%s\""
 		# Create new actor:
-		new_actor = self.game_actor_types[actor_type](position, self.engine_wrapper)
+		new_actor = self.game_actor_types[actor_type](position, self.engine)
 		# Add it to list
 		self.actors[id(new_actor)] = new_actor
 
