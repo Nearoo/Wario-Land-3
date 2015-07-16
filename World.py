@@ -39,7 +39,9 @@ class World(EngineController):
 		# Create return-list
 		return_list = []
 		for material_group in material_groups:
-			return_list.extend([self.tile_grid_layers[layer][i].rect for i in self.tile_by_types[layer][material_group]])
+			if material_group in self.tile_by_types[layer]:
+				return_list.extend([self.tile_grid_layers[layer][i].rect
+									for i in self.tile_by_types[layer][material_group]])
 
 		return return_list
 
@@ -117,7 +119,6 @@ class World(EngineController):
 		"""
 		# Catch possible errors:
 		assert layer in self.tile_by_types, "Layer does not exist."
-		if material_group not in self.tile_by_types[layer]: return []
 
 		# First get the rects of the demanded material group
 		rects_with_material_group = self._get_rects_with_material_group(layer, material_group)
