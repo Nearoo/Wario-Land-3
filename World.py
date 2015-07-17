@@ -4,7 +4,7 @@ from pygame.locals import *
 import copy
 from EngineController import *
 import utilities
-from Tile import *
+from Tiles import *
 
 
 class World(EngineController):
@@ -13,7 +13,6 @@ class World(EngineController):
 		Stores and manages all world-related data, most important of all, the tiles.
 		"""
 		super(World, self).__init__(engine)
-
 		self.grid_size = (1, 1)  # Size of grid in amount of tiles
 		self.tile_size = (1, 1)  # Size of indiv. tiles
 		self.tile_grid_layers = {}  # All tiles of all layers are stored in this list, see self.load_tmx()
@@ -21,8 +20,11 @@ class World(EngineController):
 		self.layer_names = ["background_color", "background", "sticky_background", "main"]
 		self.tile_images = utilities.split_tiled_image(pygame.image.load("tileset_n1.png").convert(), (16, 16),
 													   (225, 0, 225))
-		self.tiles = [Tile("deco", [img]) for img in self.tile_images]
-		self.tile_by_types = {tile.material_group: [] for tile in self.tiles}
+		# Create the tiles:
+		self.tiles = {i: BaseTile((0, 0), engine, "deco", [img]) for img, i in zip(self.tile_images, range(len(self.tile_images)))}
+		# Add an empty tile:
+		self.tiles[-1] = EmptyTile()
+		self.tile_by_types = {tile.get_material_group(): [] for tile in self.tiles.values()}
 
 	def _get_rects_with_material_group(self, layer, material_group):
 		"""
@@ -72,7 +74,9 @@ class World(EngineController):
 			return self.layer_names.index(name)
 
 	def update(self):
-		pass
+		for layer_index in range(len(self.tile_grid_layers)):
+			for tile in self.tile_grid_layers[layer_index]:
+				tile.update()
 
 	def get_tile_by_material_group(self, material_group):
 		"""
@@ -202,10 +206,10 @@ class World(EngineController):
 		if layer not in self.tile_by_types:
 			self.tile_by_types[layer] = {}
 		# If material_group doesn't exist, create it:
-		if new_tile.material_group not in self.tile_by_types[layer]:
-			self.tile_by_types[layer][new_tile.material_group] = []
+		if new_tile.get_material_group() not in self.tile_by_types[layer]:
+			self.tile_by_types[layer][new_tile.get_material_group()] = []
 		# Append tile:
-		self.tile_by_types[layer][new_tile.material_group].append(tile_id)
+		self.tile_by_types[layer][new_tile.get_material_group()].append(tile_id)
 
 	def set_tile_size(self, tile_size):
 		"""

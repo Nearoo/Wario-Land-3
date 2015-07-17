@@ -40,8 +40,6 @@ class Engine:
 		self.input.update()
 		# Update world:
 		self.world.update()
-		# Draw the world:
-		self._draw_world()
 		# Update Game-Actors:
 		self.actors.update()
 		# Update screen:
@@ -129,8 +127,3 @@ class Engine:
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-
-	def _draw_world(self):
-		for layer in self.world.get_full_grid().values():
-			for tile in layer:
-				self.graphics.blit(tile.get_surface(), tile.get_rect())
