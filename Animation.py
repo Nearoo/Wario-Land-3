@@ -179,7 +179,10 @@ class Animation:
 		"""
 		Returns the index of the current sprite displayed.
 		"""
-		return self.current_sprite 	
+		return self.current_sprite
+
+	def get_animation_length(self):
+		return len(self.sprite_order)
 
 	def get_surface(self):
 		"""
