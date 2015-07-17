@@ -71,20 +71,20 @@ class GeneralCollisionComponent(VelocityComponent):
 					velocity_multiplier[1] = 0
 					# Debug:
 					if debug_draw_rects:
-						self.draw_debug(engine, colliding_rect, debug_rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, debug_rect_nr)
 					# Append side of collision
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == BOTTOM:
 				if engine.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group not in colliding_mats:
 					velocity_multiplier[1] = 0
 					if debug_draw_rects:
-						self.draw_debug(engine, colliding_rect, debug_rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, debug_rect_nr)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == RIGHT:
 				if engine.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group not in colliding_mats:
 					velocity_multiplier[0] = 0
 					if debug_draw_rects:
-						self.draw_debug(engine, colliding_rect, debug_rect_nr, colliding_side)
+						self.draw_debug(engine, colliding_rect, debug_rect_nr)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == LEFT:
 				if engine.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group not in colliding_mats:
