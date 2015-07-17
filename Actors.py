@@ -1,5 +1,5 @@
 from GameActor import *
-from Components.WarioComponents import *
+import Components.WarioComponents as wc
 from Components.GeneralComponents import *
 
 
@@ -8,8 +8,8 @@ class Wario(GameActor):
 		GameActor.__init__(self, position, engine_wrapper)
 		self.rect.size = (20, 30)
 		self.components = [GravityComponent(),
-						WarioStatesComponent(),
-						LookComponent(),
-						WarioMoveComponent(),
+						wc.StatesComponent(),
+						wc.LookComponent(),
+						wc.MoveComponent(),
 						GeneralCollisionComponent(),
 						ApplyVelocityComponent()]

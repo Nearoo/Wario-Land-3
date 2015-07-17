@@ -10,9 +10,9 @@ from locals import *
 import logging
 
 
-class WarioMoveComponent(StatesComponent, VelocityComponent):
+class MoveComponent(StatesComponent, VelocityComponent):
 	def __init__(self):
-		super(WarioMoveComponent, self).__init__()
+		super(MoveComponent, self).__init__()
 		self.velocity = [0, 0]
 
 		self.walk_speed = 1
@@ -21,7 +21,7 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 		self.jumped_before = 0
 
 	def receive_message(self, name, value):
-		super(WarioMoveComponent, self).receive_message(name, value)
+		super(MoveComponent, self).receive_message(name, value)
 		if name == MSGN.VELOCITY:
 			self.velocity = value
 
@@ -57,7 +57,7 @@ class WarioMoveComponent(StatesComponent, VelocityComponent):
 		game_actor.send_message(MSGN.VELOCITY, self.velocity)
 
 
-class WarioStatesComponent(StatesComponent):
+class StatesComponent(StatesComponent):
 	def __init__(self):
 		self.draw_state = True
 
