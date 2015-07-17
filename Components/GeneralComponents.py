@@ -13,7 +13,7 @@ class GeneralCollisionComponent(VelocityComponent):
 	"""
 	def update(self, game_actor, engine):
 		# Debug: Draw rects and text..
-		debug_draw_rects = True
+		debug_draw_rects = False
 		# Debug: Draw rect-number
 		debug_rect_nr = 0
 		# Clear the list which stores what sides are colliding:
@@ -129,29 +129,6 @@ class GravityComponent(VelocityComponent):
 	def update(self, game_actor, engine):
 		if self.velocity[1] <= self.max_fall_speed:
 			self.velocity = self.velocity[0], self.velocity[1] + self.g
-			game_actor.send_message(MSGN.VELOCITY, self.velocity)
-
-
-class MoveAllDirectionsComponent(VelocityComponent):
-	def update(self, game_actor, engine):
-		if game_actor.input.pressed_keys[K_RIGHT]:
-			self.velocity = [1, self.velocity[1]]
-			game_actor.send_message(MSGN.VELOCITY, self.velocity)
-		elif game_actor.input.pressed_keys[K_LEFT]:
-			self.velocity = [-1, self.velocity[1]]
-			game_actor.send_message(MSGN.VELOCITY, self.velocity)
-		else:
-			self.velocity = [0, self.velocity[1]]
-			game_actor.send_message(MSGN.VELOCITY, self.velocity)
-
-		if game_actor.input.pressed_keys[K_UP]:
-			self.velocity = [self.velocity[0], -1]
-			game_actor.send_message(MSGN.VELOCITY, self.velocity)
-		elif game_actor.input.pressed_keys[K_DOWN]:
-			self.velocity = [self.velocity[0], 1]
-			game_actor.send_message(MSGN.VELOCITY, self.velocity)
-		else:
-			self.velocity = [self.velocity[0], 0]
 			game_actor.send_message(MSGN.VELOCITY, self.velocity)
 
 
