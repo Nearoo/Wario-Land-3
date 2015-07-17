@@ -28,6 +28,7 @@ class BaseTile(GameActor):
 
 	Note: The transparency color is always (225, 0, 255), also called "magic-pink"
 	"""
+
 	def __init__(self, position, engine, material_group, tiles_list):
 		super(BaseTile, self).__init__(position, engine)
 		# Set material_group (only for physics, see class description)
@@ -53,8 +54,13 @@ class BaseTile(GameActor):
 
 
 class EmptyTile(BaseTile):
+	"""
+	An empty tile that doesn't blit. Used for "empty" areas with no tile.
+	"""
+
 	def __init__(self, *args, **kwargs):
 		pass
+
 	def update(self):
 		pass
 
