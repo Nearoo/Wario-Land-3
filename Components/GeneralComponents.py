@@ -2,12 +2,20 @@ from BasicComponents import *
 from locals import *
 
 
-class SolidCollisionComponent(VelocityComponent):
+class GeneralCollisionComponent(VelocityComponent):
+	"""
+	Handles collision with tiles that average game-actors collide with. It collides with following things:
+	-solids
+	-soft-break
+	-hard-break
+	-shot-break
+	-fire-break
+	"""
 	def update(self, game_actor, engine):
 		# Debug: Draw rects and text..
-		draw_things = True
+		debug_draw_rects = True
 		# Debug: Draw rect-number
-		rect_nr = 0
+		debug_rect_nr = 0
 		# Clear the list which stores what sides are colliding:
 		colliding_sides_list = []
 		game_actor.send_message(MSGN.COLLISION_SIDES, colliding_sides_list)
@@ -15,13 +23,15 @@ class SolidCollisionComponent(VelocityComponent):
 		rect_copy = game_actor.rect.copy()
 		# Move the copy with velocity, so we can see how the rect would look like after applied velocity:
 		rect_copy.move_ip(self.velocity)
+		# Colliding materials:
+		colliding_mats = ["solid", "soft-break", "hard-break", "shot-break", "fire-break"]
 		# Get a colliding rect:
-		colliding_rects = engine.world.get_colliding_rects(Layers.main, "solid", rect_copy)
-		# Here, the side on which the game actor is colliding is stored (LEFT, RIGHT etc...)
-		colliding_side = None
+		colliding_rects = engine.world.get_colliding_rects(Layers.main, colliding_mats, rect_copy)
 		# Create a velocity_multiplier with which the velocity will be multiplied in the end
-		# (In the end because otherwise the algorithm doesn't work)
 		velocity_multiplier = [1, 1]
+
+		###
+		# Start algorithm:
 		# For rect in colliding rects:
 		for colliding_rect in colliding_rects:
 			# Calculate collision-vector
@@ -50,41 +60,49 @@ class SolidCollisionComponent(VelocityComponent):
 				else:
 					colliding_side = TOP
 
-			if draw_things: engine.graphics.draw_rect(colliding_rect, (43, 192, 225), 2)
+			# Debugging:
+			if debug_draw_rects: engine.graphics.draw_rect(colliding_rect, (43, 192, 225), 2)
 			# Now determine if another rect is on the side game_actor is colliding with, and if it is, ignore the collision
+
+			# TODO: Somehow make this four very similar looking cases simpler
 			if colliding_side == TOP:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (0, 1)).material_group != "solid":
+				# If tile on bottom of the tile isn't in the checked material-groups:
+				if engine.world.get_tile_relative_to("main", colliding_rect, (0, 1)).material_group not in colliding_mats:
 					velocity_multiplier[1] = 0
+					# Debug:
+					if debug_draw_rects:
+						self.draw_debug(engine, colliding_rect, debug_rect_nr, colliding_side)
+					# Append side of collision
 					colliding_sides_list.append(colliding_side)
-					if draw_things:
-						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
 			elif colliding_side == BOTTOM:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (0, -1)).material_group not in colliding_mats:
 					velocity_multiplier[1] = 0
-					if draw_things:
-						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
+					if debug_draw_rects:
+						self.draw_debug(engine, colliding_rect, debug_rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == RIGHT:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (-1, 0)).material_group not in colliding_mats:
 					velocity_multiplier[0] = 0
-					if draw_things:
-						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
+					if debug_draw_rects:
+						self.draw_debug(engine, colliding_rect, debug_rect_nr, colliding_side)
 					colliding_sides_list.append(colliding_side)
 			elif colliding_side == LEFT:
-				if engine.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group != "solid":
+				if engine.world.get_tile_relative_to("main", colliding_rect, (1, 0)).material_group not in colliding_mats:
 					velocity_multiplier[0] = 0
-					if draw_things:
-						self.draw_debug(engine, colliding_rect, rect_nr, colliding_side)
+					if debug_draw_rects:
+						self.draw_debug(engine, colliding_rect, debug_rect_nr)
 					colliding_sides_list.append(colliding_side)
-			rect_nr += 1
+			debug_rect_nr += 1
 
+		# Adjust velocity according to collision:
 		self.velocity = map(lambda x, y : x*y, self.velocity, velocity_multiplier)
+		# Send it to the other components:
 		game_actor.send_message(MSGN.VELOCITY, self.velocity)
+		# Send the colliding sides to the components:
 		game_actor.send_message(MSGN.COLLISION_SIDES, colliding_sides_list)
 
 	@staticmethod
-	def draw_debug(engine, colliding_rect, rect_nr, colliding_side):
-		colliding_sides = [TOP, LEFT, BOTTOM, RIGHT]
+	def draw_debug(engine, colliding_rect, rect_nr):
 		engine.graphics.draw_rect(colliding_rect, (225, 0, 0), 1)
 		engine.graphics.draw_text(rect_nr, colliding_rect.topleft, (225, 225, 225))
 
@@ -99,6 +117,10 @@ class SolidCollisionComponent(VelocityComponent):
 
 
 class GravityComponent(VelocityComponent):
+	"""
+	Adds gravity to the velocity vector. Simple as that.
+	self.g = acceleration, self.max_fall_speed = - the maximum fall speed!
+	"""
 	def __init__(self):
 		VelocityComponent.__init__(self)
 		self.g = 1
@@ -138,7 +160,7 @@ class ApplyVelocityComponent(VelocityComponent):
 	This component is only there to move the game_actor according to velocity sent by other components.
 	Since pygame-rects can only move full numbers (integers to be precise - fractions always get rounded downwards)
 	the movement for e.g. 1.5 pixel per second mast me calculated separately in order to keep the .5 pixels in the movement.
-	Furder details are in the update-method.
+	Further details are in the update-method.
 	"""
 	def __init__(self):
 		VelocityComponent.__init__(self)
