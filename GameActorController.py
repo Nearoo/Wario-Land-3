@@ -16,7 +16,7 @@ class GameActorController(EngineController):
 		self.actor_deletion_list = []
 		self.current_game_actor = None
 
-		self.game_actor_types = {"Wario": Wario}
+		self.game_actor_types = {"Wario": Wario, "Spearhead": SpearHead}
 
 		# Create logger
 		self.logger = logging.getLogger("Game Actor Controller")

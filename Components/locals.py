@@ -41,3 +41,17 @@ class WarioStates:
 	SLEEP = 10
 
 	TURN = 11
+
+
+# Spearhead-states:
+class ShStates:
+	STAY = 0
+	MOVE = 1
+
+	ANGRY = 2
+	BLINK = 3
+
+	SLEEP = 4
+	TURN = 5
+
+	UPSIDE_DOWN = 6
