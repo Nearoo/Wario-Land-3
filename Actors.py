@@ -11,5 +11,5 @@ class Wario(GameActor):
 						WarioStatesComponent(),
 						LookComponent(),
 						WarioMoveComponent(),
-						SolidCollisionComponent(),
+						GeneralCollisionComponent(),
 						ApplyVelocityComponent()]
