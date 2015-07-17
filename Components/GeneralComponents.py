@@ -151,13 +151,13 @@ class ApplyVelocityComponent(VelocityComponent):
 		tmp_velocity = self.velocity
 
 		# Then, the fraction part of the velocity (e.g. 0.5 if velocity is 2.5) gets added to the tm_velocity_frac_var:
-		self._tmp_velocity_frac = map(lambda frac, vel: frac + (abs(vel)%1)*sign(vel), self._tmp_velocity_frac, self.velocity)
+		self._tmp_velocity_frac = map(lambda frac, vel: frac + (abs(vel)%1)*self.sign(vel), self._tmp_velocity_frac, self.velocity)
 
 		# After that, if tmp_velocity_frac_var is bigger than one, increase the tmp-velocity:
 		tmp_velocity = map(lambda frac, vel: vel+1 if frac >= 1 else vel-1 if frac <= -1 else vel, self._tmp_velocity_frac, self.velocity)
 
 		# Then, self._tmp_velocity_frac gets again reduced to its fraction part (e.g. 1.4 becomes 0.4)
-		self._tmp_velocity_frac = map(lambda frac: sign(frac)*(abs(frac)%1), self._tmp_velocity_frac)
+		self._tmp_velocity_frac = map(lambda frac: self.sign(frac)*(abs(frac)%1), self._tmp_velocity_frac)
 
 		# Finally, the game_actor gets moved with the new velocity:
 		game_actor.rect.move_ip(tmp_velocity)
