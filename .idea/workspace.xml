@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0208742c-8769-4686-8bf2-61ef5d3b4908" name="Default" comment="Issue #3: The offset for get_tile_relative_by">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Forest_N1_1.tmx" afterPath="$PROJECT_DIR$/Forest_N1_1.tmx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Components/GeneralComponents.py" afterPath="$PROJECT_DIR$/Components/GeneralComponents.py" />
+    <list default="true" id="0208742c-8769-4686-8bf2-61ef5d3b4908" name="Default" comment="Bugfi">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/ANI_Wario_walk_r.png" afterPath="$PROJECT_DIR$/images/ANI_Wario_walk_r.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CLOC.bat" afterPath="$PROJECT_DIR$/CLOC.bat" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Silas_Gyger.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Silas_Gyger.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/World.py" afterPath="$PROJECT_DIR$/World.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Game.iws" />
@@ -18,83 +19,35 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
-  </component>
-  <component name="DockManager">
-    <window id="2">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file leaf-file-name="World.py" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/World.py">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="-0.67741936">
-                    <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
-                    <folding>
-                      <element signature="e#0#34#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
+    <option name="PATCH_PATH" value="E:\Projekte\Python\Wario-Land-3" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
-    <favorites_list name="Game" />
+    <favorites_list name="Engine">
+      <favorite_root url="file://$PROJECT_DIR$/Engine.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/Input.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/World.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/Graphics.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+      <favorite_root url="file://$PROJECT_DIR$/GameActorController.py" type="psiFile" klass="com.intellij.ide.projectView.impl.nodes.PsiFileNode" />
+    </favorites_list>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="GeneralComponents.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Components/GeneralComponents.py">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.39261746">
-              <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Engine.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Engine.py">
+      <file leaf-file-name="BasicComponents.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Components/BasicComponents.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="166" column="0" selection-start-line="166" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Graphics.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Graphics.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.3333335">
-              <caret line="24" column="49" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WarioComponents.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Components/WarioComponents.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="29" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="copy.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python27/Lib/copy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+              <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -104,20 +57,92 @@
         <entry file="file://$PROJECT_DIR$/Actors.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
+              <caret line="26" column="55" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameActorController.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GameActorController.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="locals.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Components/locals.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tile.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tile.py">
+      <file leaf-file-name="GameActor.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GameActor.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpearheadComponents.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Components/SpearheadComponents.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.333333">
+              <caret line="62" column="147" selection-start-line="62" selection-start-column="147" selection-end-line="62" selection-end-column="147" />
               <folding>
-                <element signature="e#0#11#0" expanded="true" />
+                <element signature="e#0#29#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="World.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/World.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.48322147">
+              <caret line="115" column="40" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+                <element signature="e#233#1003#0" expanded="false" />
+                <element signature="e#1907#2112#0" expanded="false" />
+                <element signature="e#2157#2457#0" expanded="false" />
+                <element signature="e#2493#2577#0" expanded="false" />
+                <element signature="e#2600#2604#0" expanded="false" />
+                <element signature="e#2663#2945#0" expanded="false" />
+                <element signature="e#4910#5824#0" expanded="false" />
+                <element signature="e#5854#5915#0" expanded="false" />
+                <element signature="e#5945#6010#0" expanded="false" />
+                <element signature="e#6053#6733#0" expanded="false" />
+                <element signature="e#6766#6848#0" expanded="false" />
+                <element signature="e#6922#6985#0" expanded="false" />
+                <element signature="e#7015#7043#0" expanded="false" />
+                <element signature="e#7103#8091#0" expanded="false" />
+                <element signature="e#8132#8284#0" expanded="false" />
+                <element signature="e#8324#8420#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Forest_N1_1.tmx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Forest_N1_1.tmx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="494" column="9" selection-start-line="494" selection-start-column="9" selection-end-line="494" selection-end-column="9" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -126,7 +151,7 @@
         <entry file="file://$PROJECT_DIR$/Animation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="187" column="0" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+              <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -150,23 +175,25 @@
         <option value="$PROJECT_DIR$/GameActorComponents.py" />
         <option value="$PROJECT_DIR$/Components/__init__.py" />
         <option value="$PROJECT_DIR$/Sound.py" />
-        <option value="$PROJECT_DIR$/Components/BasicComponents.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/Animation.py" />
-        <option value="$PROJECT_DIR$/EngineController.py" />
         <option value="$PROJECT_DIR$/GameActor.py" />
-        <option value="$PROJECT_DIR$/GameActorController.py" />
+        <option value="$PROJECT_DIR$/EngineWrapper.py" />
+        <option value="$PROJECT_DIR$/EngineController.py" />
         <option value="$PROJECT_DIR$/Input.py" />
-        <option value="$PROJECT_DIR$/Components/SpearheadComponents.py" />
-        <option value="$PROJECT_DIR$/Components/locals.py" />
-        <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/Actors.py" />
-        <option value="$PROJECT_DIR$/Components/WarioComponents.py" />
-        <option value="$PROJECT_DIR$/Tile.py" />
-        <option value="$PROJECT_DIR$/Engine.py" />
         <option value="$PROJECT_DIR$/Graphics.py" />
-        <option value="$PROJECT_DIR$/Components/GeneralComponents.py" />
+        <option value="$PROJECT_DIR$/Tile.py" />
+        <option value="$PROJECT_DIR$/Components/WarioComponents.py" />
+        <option value="$PROJECT_DIR$/Components/SpearheadComponenty.py" />
+        <option value="$PROJECT_DIR$/Components/locals.py" />
+        <option value="$PROJECT_DIR$/Animation.py" />
+        <option value="$PROJECT_DIR$/GameActorController.py" />
         <option value="$PROJECT_DIR$/World.py" />
+        <option value="$PROJECT_DIR$/Actors.py" />
+        <option value="$PROJECT_DIR$/Engine.py" />
+        <option value="$PROJECT_DIR$/Components/GeneralComponents.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/Components/SpearheadComponents.py" />
+        <option value="$PROJECT_DIR$/Components/BasicComponents.py" />
       </list>
     </option>
   </component>
@@ -218,8 +245,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -593,10 +620,166 @@
       <option name="project" value="LOCAL" />
       <updated>1437056211014</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Issue #3: The offset for get_tile_relative_to() is now in the right order.">
+      <created>1437056461871</created>
+      <option name="number" value="00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1437056461871</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Issue #3: World now has a dict that sorts tiles by material_group">
+      <created>1437058803277</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1437058803277</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Issue #21: Make assignment of engine-vars to more clarity">
+      <created>1437059185141</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1437059185141</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Issue #21: Cleaned up Engine">
+      <created>1437060848292</created>
+      <option name="number" value="00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1437060848292</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Issue #21: Cleaned up main.py :)">
+      <created>1437060875555</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1437060875555</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Issue #21: Cleaned up Input">
+      <created>1437061299028</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1437061299028</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Issue #21: Heavily cleaned up World">
+      <created>1437064319880</created>
+      <option name="number" value="00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1437064319880</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Issue #21: Added constants for layers">
+      <created>1437064368450</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1437064368450</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Issue #21: Cleaned up Engine">
+      <created>1437064403505</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1437064403505</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Issue #21: Cleaned up Engine even more">
+      <created>1437064475021</created>
+      <option name="number" value="00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1437064475021</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Issue #21: Engine now passes self insted of self.engine_wrapper&#10;Since all private parts of Engine are made private now, the engine can safely pass itself instead of awkwardly passing a engine_wrapper">
+      <created>1437064934997</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1437064934997</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Issue #21: Implemented new engine-wrapper-replacement">
+      <created>1437065134323</created>
+      <option name="number" value="00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1437065134323</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Issue #21: Error catching inserted">
+      <created>1437065508086</created>
+      <option name="number" value="00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1437065508086</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Issue #21: Renamed main object-layer from &quot;main&quot; to &quot;game_actors&quot;">
+      <created>1437068664345</created>
+      <option name="number" value="00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1437068664345</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Issue #21: Cleaned up GeneralComponents a bit">
+      <created>1437091724768</created>
+      <option name="number" value="00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1437091724768</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Issue #21: Cleaned up GeneralComponents a bit more">
+      <created>1437092056211</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1437092056211</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Issue #21: Cleaned up Tile a bit">
+      <created>1437092181385</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1437092181385</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Issue #21: Implemented rename of SolidCollisionComponent&#10;Since it doesn't only collide with solids anymore">
+      <created>1437092223525</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1437092223525</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Issue #21: Cleaned up GeneralComponents">
+      <created>1437128134540</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1437128134540</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Issue #21: Implementing new name of object-group-layer in Tiled">
+      <created>1437128182554</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1437128182554</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Issue #21: Renamed Warios components">
+      <created>1437128465745</created>
+      <option name="number" value="00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1437128465745</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Issue #21: Renamed message-name-constants (MSGN) to a more general name&#10;Since I think things like &quot;lookdirection&quot;, &quot;state&quot; and &quot;statestack&quot; will be used many times, not just by Wario...">
+      <created>1437129018695</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1437129018695</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Issue #22: Made a system that allows movement in fraction of pixels&#10;For instance 1.3 pixels/second or even 0.01 pixels/second are now possible.&#10;However, there are some rounding errors at times (e.g. 0.1 becomes 0.09999999999999999), so it is advised to not use to small amounts in order to prevent unexpected movement.">
+      <created>1437136110518</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1437136110518</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Issue #22: Moving a fraction of pixels now works.">
+      <created>1437137028830</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1437137028831</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added a new method &quot;get_animation_length&quot;">
+      <created>1437137901910</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1437137901910</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Issue #21: Cleaned up World even more">
+      <created>1437137951397</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1437137951397</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="2">
+  <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -607,19 +790,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="876" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.269791" sideWeight="0.74437296" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10006333" sideWeight="0.7154341" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.4977834" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849604" sideWeight="0.50474983" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17941953" sideWeight="0.51741606" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849604" sideWeight="0.49525017" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.4977834" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17941953" sideWeight="0.49525017" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17941953" sideWeight="0.4825839" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24952501" sideWeight="0.48622048" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.269791" sideWeight="0.255627" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10006333" sideWeight="0.28456593" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39841688" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -627,7 +810,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16226913" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -646,68 +829,40 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/../.." />
     </ignored-roots>
-    <MESSAGE value="Fix of issue #5: Separate the engine-part from the game_actor-part in the arguments of the components" />
-    <MESSAGE value="#1: Improve animation class to support new order control argument format" />
-    <MESSAGE value="#1: Implement new order control variable format for Animation-class to Warios stand-animation" />
-    <MESSAGE value="Issue #11: Change states from strings to constants&#10;&#10;Changes many state-vars like Warios-states or collision_sides to contstans declared in &quot;locals.py&quot;. In order to have some order the constants are categorized in message-names (&quot;MSGN&quot;) and Warios-states (&quot;WarioStates&quot;)." />
-    <MESSAGE value="Issue #10: Rewrite Warios look-component so it actually uses the states instead of properties like velocity" />
-    <MESSAGE value="Issue #11: Implement Warios new LookComponent.&#10;&#10;" />
-    <MESSAGE value="Issue #8: Create a GameActor-controller&#10;Created a GameActor-controller that holds, controls and communicates between all GameActors." />
-    <MESSAGE value="Issue #10: Implemented the new GameActor-controller" />
-    <MESSAGE value="Fixed Issue #6: Wario can't jump to infinity anymore" />
-    <MESSAGE value="Bugfix #14: Animation-class now updates surface on reset()" />
-    <MESSAGE value="Issue #9: Wario now goes to sleep!&#10;Added two new states: GOTO_SLEEP and WAKE_UP to the WarioStates-category. The length of those states is controlled by the LookComponent." />
-    <MESSAGE value="Issue #15: Moved EngineWrapper out of GameActor&#10;I've created a new superclass called &quot;EngineController&quot;. While not really needed, it's usefull to be sure that things got made rightfully." />
-    <MESSAGE value="Disabled debug-view of colliding rects &amp; corrected some typos" />
-    <MESSAGE value="Issue #17: Make Wario turn like in the original" />
-    <MESSAGE value="Fix of issue #12: Wario can now always jump the height he should&#10;The problem was that in the `if self.state == WarioStates.JUMP_STAY` part, the check weather Wario was jumping before or not to reset the frame-counter was done wrongly. If UPRIGHT_STAY changes the state, then this new state gets already appended to the self.state_stack - so if you want to check what the previous state was, you have to check self.state_stack[-2] and not [-1]." />
-    <MESSAGE value="Issue #7: Improve Warios jump-mechanism to resemble more the original&#10;It's better now, but not perfect. The gravity pulls a little to much, it seems.&#10;I've create a sort of &quot;gradient&quot; of jump-speeds: 5 x 3 pixel/frame, 4x2ppf, 8x1ppf and 2x0 ppf. As said, not perfect, but better.&#10; &#10; NOTE: It's not possible to do jumps that have to be possible, e.g. jump from one platform to the other." />
-    <MESSAGE value="Issue #3: Tiles now contain information about their position and size - and they're sorted in a dict.&#10;This is the dict: ({layer_id: {tile_id: tile_insta,ce}}) It's not the definite solution, but it's better." />
-    <option name="LAST_COMMIT_MESSAGE" value="Issue #3: Tiles now contain information about their position and size - and they're sorted in a dict.&#10;This is the dict: ({layer_id: {tile_id: tile_insta,ce}}) It's not the definite solution, but it's better." />
+    <MESSAGE value="Issue #3: The offset for get_tile_relative_to() is now in the right order." />
+    <MESSAGE value="Issue #3: World now has a dict that sorts tiles by material_group" />
+    <MESSAGE value="Issue #21: Make assignment of engine-vars to more clarity" />
+    <MESSAGE value="Issue #21: Cleaned up main.py :)" />
+    <MESSAGE value="Issue #21: Cleaned up Input" />
+    <MESSAGE value="Issue #21: Heavily cleaned up World" />
+    <MESSAGE value="Issue #21: Added constants for layers" />
+    <MESSAGE value="Issue #21: Cleaned up Engine" />
+    <MESSAGE value="Issue #21: Cleaned up Engine even more" />
+    <MESSAGE value="Issue #21: Engine now passes self insted of self.engine_wrapper&#10;Since all private parts of Engine are made private now, the engine can safely pass itself instead of awkwardly passing a engine_wrapper" />
+    <MESSAGE value="Issue #21: Implemented new engine-wrapper-replacement" />
+    <MESSAGE value="Issue #21: Error catching inserted" />
+    <MESSAGE value="Issue #21: Renamed main object-layer from &quot;main&quot; to &quot;game_actors&quot;" />
+    <MESSAGE value="Issue #21: Cleaned up GeneralComponents a bit" />
+    <MESSAGE value="Issue #21: Cleaned up GeneralComponents a bit more" />
+    <MESSAGE value="Issue #21: Cleaned up Tile a bit" />
+    <MESSAGE value="Issue #21: Implemented rename of SolidCollisionComponent&#10;Since it doesn't only collide with solids anymore" />
+    <MESSAGE value="Issue #21: Cleaned up GeneralComponents" />
+    <MESSAGE value="Issue #21: Implementing new name of object-group-layer in Tiled" />
+    <MESSAGE value="Issue #21: Renamed Warios components" />
+    <MESSAGE value="Issue #21: Renamed message-name-constants (MSGN) to a more general name&#10;Since I think things like &quot;lookdirection&quot;, &quot;state&quot; and &quot;statestack&quot; will be used many times, not just by Wario..." />
+    <MESSAGE value="Issue #22: Made a system that allows movement in fraction of pixels&#10;For instance 1.3 pixels/second or even 0.01 pixels/second are now possible.&#10;However, there are some rounding errors at times (e.g. 0.1 becomes 0.09999999999999999), so it is advised to not use to small amounts in order to prevent unexpected movement." />
+    <MESSAGE value="Issue #22: Moving a fraction of pixels now works." />
+    <MESSAGE value="Added a new method &quot;get_animation_length&quot;" />
+    <MESSAGE value="Issue #21: Cleaned up World even more" />
+    <option name="LAST_COMMIT_MESSAGE" value="Issue #21: Cleaned up World even more" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="19" />
+      <option name="time" value="27" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Actors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="66" selection-start-line="10" selection-start-column="66" selection-end-line="10" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/World.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Engine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="52" selection-start-line="44" selection-start-column="52" selection-end-line="44" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Graphics.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="41" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Animation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -896,13 +1051,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.039387308">
           <caret line="1" column="63" selection-start-line="1" selection-start-column="63" selection-end-line="1" selection-end-column="63" />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/images/Thumnails/Wario.png">
@@ -910,71 +1065,42 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Components/BasicComponents.py">
+    <entry file="file://C:/Python27/Lib/copy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="42" selection-start-line="40" selection-start-column="42" selection-end-line="40" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
+          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GameActorController.py">
+    <entry file="file://C:/Python27/Lib/logging/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#20#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.96644294">
+          <caret line="1125" column="0" selection-start-line="1125" selection-start-column="0" selection-end-line="1125" selection-end-column="0" />
+          <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tileset_n1.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tileset.psd">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Input.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
+          <caret line="10" column="43" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EngineController.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39261746">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/GameActor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18120806">
-          <caret line="6" column="36" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12080537">
-          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Components/locals.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30201343">
-          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Forest_N1_1.tmx">
+    <entry file="file://$PROJECT_DIR$/CLOC.bat">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -982,26 +1108,114 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/EngineController.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30201343">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Graphics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="6" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Components/WarioComponents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="266" column="30" selection-start-line="0" selection-start-column="0" selection-end-line="318" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#232#1647#0" expanded="false" />
+            <element signature="e#1691#7506#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Engine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="123" column="56" selection-start-line="123" selection-start-column="56" selection-end-line="123" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Components/GeneralComponents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="153" column="88" selection-start-line="153" selection-start-column="88" selection-end-line="153" selection-end-column="88" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.060402684">
-          <caret line="2" column="29" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Actors.py">
+    <entry file="file://$PROJECT_DIR$/GameActor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python27/Lib/copy.py">
+    <entry file="file://$PROJECT_DIR$/Components/BasicComponents.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+          <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Components/SpearheadComponents.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.333333">
+          <caret line="62" column="147" selection-start-line="62" selection-start-column="147" selection-end-line="62" selection-end-column="147" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Forest_N1_1.tmx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="494" column="9" selection-start-line="494" selection-start-column="9" selection-end-line="494" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -1009,61 +1223,61 @@
     <entry file="file://$PROJECT_DIR$/Animation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="187" column="0" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tile.py">
+    <entry file="file://$PROJECT_DIR$/Actors.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Graphics.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.3333335">
-          <caret line="24" column="49" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Engine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="166" column="0" selection-start-line="166" selection-start-column="0" selection-end-line="167" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Components/WarioComponents.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="29" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
+          <caret line="26" column="55" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Components/GeneralComponents.py">
+    <entry file="file://$PROJECT_DIR$/GameActorController.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39261746">
-          <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Components/locals.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="17" selection-start-line="36" selection-start-column="17" selection-end-line="36" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/World.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.67741936">
-          <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.48322147">
+          <caret line="115" column="40" selection-start-line="115" selection-start-column="40" selection-end-line="115" selection-end-column="40" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#233#1003#0" expanded="false" />
+            <element signature="e#1907#2112#0" expanded="false" />
+            <element signature="e#2157#2457#0" expanded="false" />
+            <element signature="e#2493#2577#0" expanded="false" />
+            <element signature="e#2600#2604#0" expanded="false" />
+            <element signature="e#2663#2945#0" expanded="false" />
+            <element signature="e#4910#5824#0" expanded="false" />
+            <element signature="e#5854#5915#0" expanded="false" />
+            <element signature="e#5945#6010#0" expanded="false" />
+            <element signature="e#6053#6733#0" expanded="false" />
+            <element signature="e#6766#6848#0" expanded="false" />
+            <element signature="e#6922#6985#0" expanded="false" />
+            <element signature="e#7015#7043#0" expanded="false" />
+            <element signature="e#7103#8091#0" expanded="false" />
+            <element signature="e#8132#8284#0" expanded="false" />
+            <element signature="e#8324#8420#0" expanded="false" />
           </folding>
         </state>
       </provider>

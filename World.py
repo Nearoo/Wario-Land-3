@@ -99,7 +99,6 @@ class World(EngineController):
 
 		# Catch possible errors:
 		assert layer in self.tile_by_types, "Layer does not exist."
-		if material_group not in self.tile_by_types[layer]: return None
 
 		# First, get a list of all rects that have the desired material-group:
 		rects_with_material_group = self._get_rects_with_material_group(layer, material_group)
