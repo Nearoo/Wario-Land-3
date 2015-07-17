@@ -196,9 +196,9 @@ class StatesComponent(StatesComponent):
 		self.state_stack.append(self.state)
 
 		# Send the updates:
-		game_actor.send_message(MSGN.WARIO_LOOKDIRECTION, self.look_direction)
-		game_actor.send_message(MSGN.WARIO_STATE, self.state)
-		game_actor.send_message(MSGN.WARIO_STATESTACK, self.state_stack)
+		game_actor.send_message(MSGN.LOOKDIRECTION, self.look_direction)
+		game_actor.send_message(MSGN.STATE, self.state)
+		game_actor.send_message(MSGN.STATESTACK, self.state_stack)
 		if len(self.state_stack) > self.state_stack_size:
 			self.state_stack.pop(0)
 
@@ -261,9 +261,9 @@ class LookComponent(StatesComponent):
 
 	def receive_message(self, name, value):
 		super(LookComponent, self).receive_message(name, value)
-		if name == MSGN.WARIO_LOOKDIRECTION:
+		if name == MSGN.LOOKDIRECTION:
 			self.look_direction = value
-		elif name == MSGN.WARIO_STATE:
+		elif name == MSGN.STATE:
 			self.state = value
 
 	def update(self, game_actor, engine):
@@ -284,13 +284,13 @@ class LookComponent(StatesComponent):
 			if self.current_animation.get_spritenr() == 4:
 				self.play_animation("sleep_"+ld)
 				self.state = WarioStates.SLEEP
-				game_actor.send_message(MSGN.WARIO_STATE, self.state)
+				game_actor.send_message(MSGN.STATE, self.state)
 		elif self.state == WarioStates.WAKE_UP:
 			self.play_animation("wakeup_"+ld)
 			if self.current_animation.get_spritenr() == 4:
 				self.play_animation("stand_"+ld)
 				self.state = WarioStates.UPRIGHT_STAY
-				game_actor.send_message(MSGN.WARIO_STATE, self.state)
+				game_actor.send_message(MSGN.STATE, self.state)
 
 		elif self.state == WarioStates.TURN:
 			side = "left" if self.look_direction == RIGHT else "right"
@@ -298,8 +298,8 @@ class LookComponent(StatesComponent):
 			if self.current_animation.get_spritenr() == 2:
 				self.look_direction = RIGHT if side == "right" else LEFT
 				self.state = WarioStates.UPRIGHT_STAY
-				game_actor.send_message(MSGN.WARIO_STATE, self.state)
-				game_actor.send_message(MSGN.WARIO_LOOKDIRECTION, self.look_direction)
+				game_actor.send_message(MSGN.STATE, self.state)
+				game_actor.send_message(MSGN.LOOKDIRECTION, self.look_direction)
 
 		# Update the current animation:
 		self.current_animation.update()

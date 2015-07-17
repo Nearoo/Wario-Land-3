@@ -45,9 +45,9 @@ class StatesComponent(GameActorComponent):
 		self.look_direction = RIGHT
 
 	def receive_message(self, name, value):
-		if name == MSGN.WARIO_STATE:
+		if name == MSGN.STATE:
 			self.state = value
-		elif name == MSGN.WARIO_LOOKDIRECTION:
+		elif name == MSGN.LOOKDIRECTION:
 			self.look_direction = value
 		elif name == MSGN.COLLISION_SIDES:
 			self.colliding_sides = value
