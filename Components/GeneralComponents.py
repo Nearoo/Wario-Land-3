@@ -143,19 +143,21 @@ class ApplyVelocityComponent(VelocityComponent):
 		VelocityComponent.__init__(self)
 		# Use to save the fraction part of a velocity even dough pygame only moves in full steps, rounding downwards:
 		self._tmp_velocity_frac = [0, 0]
+		# Create function to get the sign of a number:
+		self.sign = lambda x: 1 if x >= 0 else -1
 
 	def update(self, game_actor, engine):
-		# First, since it's changed later on, the velocity gets copied in order to prevent a continuing increase
-		# #if no other components are there to change it back:
+		# Velocity get copied in order to prevent increase into infinity:
 		tmp_velocity = self.velocity
 
-		# TODO: Get this system right.
-		"""# Then, the fraction part of the velocity (e.g. 0.5 if velocity is 2.5) gets added to the tm_velocity_frac_var:
-		self._tmp_velocity_frac = map(lambda frac, vel: frac + (vel%1)*self.sign(vel), self._tmp_velocity_frac, self.velocity)
-		# After that, if tmp_velocity_frac_var is bigger than one (meaning if a bigger step of the rect _would_ occur if it wouldn't round everythin down)
-		tmp_velocity = map(lambda frac, vel: vel+1 if frac >= 1 else vel, self._tmp_velocity_frac, self.velocity)
-		# Then the whole numbers of tmp_velocity_frac get subtracted, so it needs again a fraction to get above 1 (e.g. 1.5 becomes 0.5)
-		self._tmp_velocity_frac = map(lambda frac: self.sign(frac)*(frac %1), self._tmp_velocity_frac)
+		# Then, the fraction part of the velocity (e.g. 0.5 if velocity is 2.5) gets added to the tm_velocity_frac_var:
+		self._tmp_velocity_frac = map(lambda frac, vel: frac + (abs(vel)%1)*sign(vel), self._tmp_velocity_frac, self.velocity)
 
-		# Finally move the game_actor according to the caluclated velocity:"""
+		# After that, if tmp_velocity_frac_var is bigger than one, increase the tmp-velocity:
+		tmp_velocity = map(lambda frac, vel: vel+1 if frac >= 1 else vel-1 if frac <= -1 else vel, self._tmp_velocity_frac, self.velocity)
+
+		# Then, self._tmp_velocity_frac gets again reduced to its fraction part (e.g. 1.4 becomes 0.4)
+		self._tmp_velocity_frac = map(lambda frac: sign(frac)*(abs(frac)%1), self._tmp_velocity_frac)
+
+		# Finally, the game_actor gets moved with the new velocity:
 		game_actor.rect.move_ip(tmp_velocity)
