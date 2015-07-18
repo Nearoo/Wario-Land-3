@@ -2,6 +2,42 @@ import copy
 from globals import pygame
 
 
+class Counter:
+	"""
+	Useful to count frames.
+	"""
+	def __init__(self, frames):
+		"""
+		:param frames: Target frames to count to
+		"""
+		self.max_frames = frames
+		self.current_frame = 0
+
+	def update(self, amount=1):
+		"""
+		Increase counter by  1 or more
+		:param amount: Amount of frames, standard: 1
+		:return: True or False, if target is reached or not
+		"""
+		self.current_frame += amount
+		return self.evaluate()
+
+	def evaluate(self):
+		"""
+		:return: True or False, if target is reached or not
+		"""
+		return self.current_frame >= self.max_frames
+
+	def reset(self):
+		"""
+		Resets the counter
+		:return: self
+		"""
+		self.current_frame = 0
+		return self
+
+
+
 def split_tiled_image(image, tile_size, colorkey=None):
 	"""Splits a tiled image into single tiles in a return_list."""
 	
