@@ -10,6 +10,7 @@ class Input(EngineController):
 		"""
 		super(Input, self).__init__(engine)
 		self.events = pygame.event.get() # Get pygame.events the first time
+		self.keydown_events = {} # Create list for keydown events - a event can be checked e.g. "if keydown_events[K_RIGHT]"
 		self.pressed_keys = pygame.key.get_pressed() # Get pressed keys the first time
 		self.focused_keys = pygame.key.get_focused() # Get focused keys the first time
 		self.smoothkeys = [] # Create a list where the smoothkeys will be stored.
@@ -22,6 +23,14 @@ class Input(EngineController):
 		self.events = pygame.event.get()
 		self.pressed_keys = pygame.key.get_pressed()
 		self.focused_keys = pygame.key.get_focused()
+
+		self.keydown_events = {i: False for i in range(200)}
+		self.keyup_events = self.keydown_events
+		for event in self.events:
+			if event.type == pygame.KEYDOWN:
+				self.keydown_events[event.key] = True
+			elif event.type == pygame.KEYUP:
+				self.keyup_events[event.key] = False
 
 		#####
 		# Update self.smoothkeys:
