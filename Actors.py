@@ -19,7 +19,7 @@ class Wario(GameActor):
 class SpearHead(GameActor):
 	def __init__(self, position, engine_wrapper):
 		super(SpearHead, self).__init__(position, engine_wrapper)
-		self.rect.size = (20, 30)
+		self.rect.size = (20, 16)
 		self.components = [GravityComponent(),
 						   spc.StateComponent(),
 						   spc.LookComponent(),
