@@ -30,10 +30,19 @@ class Engine:
 		# Finally, first map (temporary):
 		self._load_tmx("Forest_N1_1.tmx")
 
+		# Var changed by self.load_new_level. If not false, in the next update cycle, the level gets loaded.
+		self._load_new_level = False
+
 	def update(self):
 		"""
 		Updates everything. Should be called once per frame.
 		"""
+
+		# Check if new level should be loaded:
+		if self._load_new_level:
+			self._load_tmx(self._load_new_level)
+			self._load_new_level = False
+
 		# Handle events:
 		self._handle_events()
 		# Update input:
@@ -46,7 +55,6 @@ class Engine:
 		self.graphics.update()
 		# Make sure engine doesn't run faster than 60 fps:
 		self._CLOCK.tick(self._fps)
-
 	def _load_tmx(self, filepath):
 		"""
 		Loads the tmx-file 'filepath' and parses it.
@@ -57,9 +65,10 @@ class Engine:
 		# Empty self.actors:
 		self.actors = GameActorController(self)
 		# TODO: Find a way to empty self.world
+		self.world = World(self)
 
 		# Open and parse the tmx-file
-		self._tmx_root = ET.parse('Forest_N1_1.tmx').getroot()
+		self._tmx_root = ET.parse(filepath).getroot()
 
 		# Get grid-size (in tiles)
 		grid_size = (int(self._tmx_root.attrib["width"]), int(self._tmx_root.attrib["height"]))
@@ -127,3 +136,6 @@ class Engine:
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
+
+	def load_new_level(self, filename):
+		self._load_new_level = filename
