@@ -16,14 +16,18 @@ class MoveComponent(StatesComponent, VelocityComponent):
 		self.velocity = [0, 0]
 
 		self.walk_speed = 1
+		self.soft_fist_speed = 1.5
 		self.jump_speed = 3
 
 		self.jumped_before = 0
+		self.state_stack = []
 
 	def receive_message(self, name, value):
 		super(MoveComponent, self).receive_message(name, value)
 		if name == MSGN.VELOCITY:
 			self.velocity = value
+		elif name == MSGN.STATESTACK:
+			self.state_stack = value
 
 	def update(self, game_actor, engine):
 		if (self.state == WarioStates.UPRIGHT_STAY or
@@ -33,15 +37,16 @@ class MoveComponent(StatesComponent, VelocityComponent):
 					self.state == WarioStates.TURN):
 			self.velocity = 0, self.velocity[1]
 		elif (self.state == WarioStates.UPRIGHT_MOVE or
-				self.state == WarioStates.CROUCH_MOVE or
-				self.state == WarioStates.JUMP_MOVE or
-			  	self.state == WarioStates.FALL_MOVE):
+					  self.state == WarioStates.CROUCH_MOVE or
+					  self.state == WarioStates.JUMP_MOVE or
+					  self.state == WarioStates.FALL_MOVE):
 
 			if self.look_direction == RIGHT:
 				self.velocity = self.walk_speed, self.velocity[1]
 			else:
 				self.velocity = -self.walk_speed, self.velocity[1]
-		if (self.state == WarioStates.JUMP_MOVE) or (self.state == WarioStates.JUMP_STAY):
+		if (self.state == WarioStates.JUMP_MOVE) or (self.state == WarioStates.JUMP_STAY) or \
+				self.state == WarioStates.SFIST_JUMP:
 			if self.jumped_before > 18:
 				self.velocity = self.velocity[0], 0
 			elif self.jumped_before > 10:
@@ -54,11 +59,38 @@ class MoveComponent(StatesComponent, VelocityComponent):
 		else:
 			self.jumped_before = 0
 
+		if self.state == WarioStates.SFIST_ONGROUND or self.state == WarioStates.SFIST_FALL:
+			if self.look_direction == RIGHT:
+				self.velocity = self.soft_fist_speed, self.velocity[1]
+			else:
+				self.velocity = -self.soft_fist_speed, self.velocity[1]
+		elif self.state == WarioStates.BUMP_BACK and self.state_stack[-2] != WarioStates.BUMP_BACK:
+			if self.look_direction == RIGHT:
+				self.velocity = [-1.5, -3]
+			else:
+				self.velocity = [1.5, -3]
+
 		game_actor.send_message(MSGN.VELOCITY, self.velocity)
 
 
 class StatesComponent(StatesComponent):
 	def __init__(self):
+		"""
+		This is the states component of Wario, which manages what state when occurs.
+		It might seem confusing at the beginning, but the underlying principle is kind of simple:
+		Wario can have many different states. Being in any state, certain defined events like the push of a button
+		lead to another state, which can lead to another state by another state etc...
+		Here's an example: Wario is in state "Stand". Pushing the button "right" brings him to his "walk" state, releasing
+		it back to the "stand" state. Pushing the "up" key makes him jump - pushing the "right" key after that to his
+		moving-jump-state. Touching the ground on both of those two last states brings them to the "stand" and "walk" states
+		back again.
+
+		It is important to know that this component does NOTHING but changing the state. No movement or looks.
+
+		Also, certain states must be changed from another component, e.g. the looks component, when an animation is finished.
+
+		"""
+
 		self.draw_state = True
 
 		self.colliding_sides = []
@@ -81,7 +113,16 @@ class StatesComponent(StatesComponent):
 		self.UP = K_w
 
 		# Set how long Wario can jump until the gravity takes him
-		self.jump_duration = 20
+		jump_duration = 20
+		# Set how long Wario should beat forward:
+		beat_duration = 60
+		# Set how long it shoult take until Wario goes to sleep:
+		sleep_duration = 1800
+
+		# Add counters:
+		self._counters = {"goto-sleep":    Counter(sleep_duration),
+						"fist-duration": Counter(beat_duration),
+						"jump-duration": Counter(jump_duration)}
 
 	def update(self, game_actor, engine):
 		# Update states:
@@ -89,9 +130,9 @@ class StatesComponent(StatesComponent):
 		if self.state == WarioStates.UPRIGHT_STAY:
 			# Reset frame-counter if Wario wasn't standing before:
 			if self.state_stack[-1] != WarioStates.UPRIGHT_STAY:
-				self.frame_counter = 0
+				self._counters["goto-sleep"].reset()
 			# Count up to 1800, (30 sec) and go to sleep if reached:
-			if self.count_frames(1800):
+			if self._counters["goto-sleep"].update():
 				# The animation-component must handle this!!
 				self.state = WarioStates.GOTO_SLEEP
 
@@ -99,30 +140,38 @@ class StatesComponent(StatesComponent):
 				self.state = WarioStates.UPRIGHT_MOVE
 			elif engine.input.smoothkeys[self.DOWN]:
 				self.state = WarioStates.CROUCH_STAY
-			elif engine.input.smoothkeys[self.A]:
+			elif engine.input.smoothkeys[self.B]:
+				self.state = WarioStates.SFIST_ONGROUND
+			elif engine.input.keyup_events[self.A]:
 				self.state = WarioStates.JUMP_STAY
 
 			if not BOTTOM in self.colliding_sides:
 				self.state = WarioStates.FALL_STAY
+			else:
+				self._turn_if_needed(engine)
 
 		elif self.state == WarioStates.UPRIGHT_MOVE:
 			if engine.input.smoothkeys[self.DOWN]:
 				self.state = WarioStates.CROUCH_MOVE
-			elif engine.input.smoothkeys[self.A]:
+			elif engine.input.smoothkeys[self.B]:
+				self.state = WarioStates.SFIST_ONGROUND
+			elif engine.input.keydown_events[self.A]:
 				self.state = WarioStates.JUMP_MOVE
 			if not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.UPRIGHT_STAY
 
 			if not BOTTOM in self.colliding_sides:
 				self.state = WarioStates.FALL_MOVE
+			else:
+				self._turn_if_needed(engine)
 
 		elif self.state == WarioStates.SLEEP:
 			if (engine.input.smoothkeys[self.DOWN] or
-						engine.input.smoothkeys[self.UP] or
-						engine.input.smoothkeys[self.LEFT] or
-						engine.input.smoothkeys[self.RIGHT] or
-						engine.input.smoothkeys[self.A] or
-						engine.input.smoothkeys[self.B]):
+					engine.input.smoothkeys[self.UP] or
+					engine.input.smoothkeys[self.LEFT] or
+					engine.input.smoothkeys[self.RIGHT] or
+					engine.input.smoothkeys[self.A] or
+					engine.input.smoothkeys[self.B]):
 				# The animation-component must handle this!!
 				self.state = WarioStates.WAKE_UP
 
@@ -131,66 +180,95 @@ class StatesComponent(StatesComponent):
 				self.state = WarioStates.CROUCH_MOVE
 
 			elif not engine.input.smoothkeys[self.DOWN]:
-					self.state = WarioStates.UPRIGHT_STAY
+				self.state = WarioStates.UPRIGHT_STAY
 
 		elif self.state == WarioStates.CROUCH_MOVE:
 			if not engine.input.smoothkeys[self.DOWN]:
-					self.state = WarioStates.UPRIGHT_MOVE
+				self.state = WarioStates.UPRIGHT_MOVE
 			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.CROUCH_STAY
 
 		elif self.state == WarioStates.JUMP_STAY:
+			self._handle_direction(engine)
 			if not engine.input.smoothkeys[self.A]:
 				self.state = WarioStates.FALL_STAY
 			elif engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
-					self.state = WarioStates.JUMP_MOVE
+				self.state = WarioStates.JUMP_MOVE
 
 			# [-2] because you want to catch if the state changed, but if it changes, the change is already appended
 			# to the statestack!
 			if self.state_stack[-2] != WarioStates.JUMP_MOVE and self.state_stack[-2] != WarioStates.JUMP_STAY:
-				self.frame_counter = 0
-			if self.count_frames(self.jump_duration):
+				self._counters["jump-duration"].reset()
+			if self._counters["jump-duration"].update():
 				self.state = WarioStates.FALL_STAY
 
 		elif self.state == WarioStates.JUMP_MOVE:
+			self._handle_direction(engine)
 			if not engine.input.smoothkeys[self.A]:
 				self.state = WarioStates.FALL_MOVE
 			elif not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.JUMP_STAY
 			# Same as in JUMP_STAY-part
 			if self.state_stack[-2] != WarioStates.JUMP_MOVE and self.state_stack[-2] != WarioStates.JUMP_STAY:
-				self.frame_counter = 0
-			if self.count_frames(self.jump_duration):
-				self.state = WarioStates.FALL_MOVE
+				self._counters["jump-duration"].reset()
+			if self._counters["jump-duration"].update():
+				self.state = WarioStates.FALL_STAY
 
 		elif self.state == WarioStates.FALL_STAY:
+			self._handle_direction(engine)
 			if engine.input.smoothkeys[self.RIGHT] or engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.FALL_MOVE
 			if BOTTOM in self.colliding_sides:
 				self.state = WarioStates.UPRIGHT_STAY
 
 		elif self.state == WarioStates.FALL_MOVE:
+			self._handle_direction(engine)
 			if not engine.input.smoothkeys[self.RIGHT] and not engine.input.smoothkeys[self.LEFT]:
 				self.state = WarioStates.FALL_STAY
 
 			if BOTTOM in self.colliding_sides:
 				self.state = WarioStates.UPRIGHT_MOVE
 
-		# Update Warios look-direction:
-		for event in engine.input.events:
-			if event.type == KEYDOWN:
-				if event.key == self.RIGHT:
-					if (self.state == WarioStates.UPRIGHT_STAY or self.state == WarioStates.UPRIGHT_MOVE or \
-						self.state == WarioStates.TURN) and self.look_direction == LEFT:
-						self.state = WarioStates.TURN
-					else:
-						self.look_direction = RIGHT
-				elif event.key == self.LEFT:
-					if (self.state == WarioStates.UPRIGHT_STAY or self.state == WarioStates.UPRIGHT_MOVE or \
-						self.state == WarioStates.TURN) and self.look_direction == RIGHT:
-						self.state = WarioStates.TURN
-					else:
-						self.look_direction = LEFT
+		elif self.state == WarioStates.SFIST_ONGROUND:
+			if self._handle_direction(engine):
+				self.state = WarioStates.UPRIGHT_STAY
+			elif self.look_direction in self.colliding_sides:
+				self.state = WarioStates.BUMP_BACK
+			elif self.state_stack[-2] != WarioStates.SFIST_JUMP and \
+				self.state_stack[-2] != WarioStates.SFIST_ONGROUND and \
+				self.state_stack[-2] != WarioStates.SFIST_FALL:
+				self._counters["fist-duration"].reset()
+
+			if self._counters["fist-duration"].update():
+				self.state = WarioStates.UPRIGHT_STAY
+			elif engine.input.keyup_events[self.A]:
+				self.state = WarioStates.SFIST_JUMP
+
+		elif self.state == WarioStates.SFIST_JUMP:
+			if self._handle_direction(engine):
+				self.state = WarioStates.FALL_MOVE
+			elif self.look_direction in self.colliding_sides:
+				self.state = WarioStates.BUMP_BACK
+			elif self.state_stack[-2] != WarioStates.SFIST_JUMP:
+				self._counters["jump-duration"].reset()
+			self._counters["fist-duration"].update()
+			if self._counters["jump-duration"].update():
+				self.state = WarioStates.SFIST_FALL
+			elif BOTTOM in self.colliding_sides:
+				self.state = WarioStates.SFIST_ONGROUND
+
+		elif self.state == WarioStates.SFIST_FALL:
+			if self._handle_direction(engine):
+				self.state = WarioStates.FALL_MOVE
+			elif self.look_direction in self.colliding_sides:
+				self.state = WarioStates.BUMP_BACK
+			self._counters["fist-duration"].update()
+			if BOTTOM in self.colliding_sides:
+				self.state = WarioStates.SFIST_ONGROUND
+
+		elif self.state == WarioStates.BUMP_BACK:
+			if BOTTOM in self.colliding_sides:
+				self.state = WarioStates.UPRIGHT_STAY
 
 		# Append state to state-stack:
 		self.state_stack.append(self.state)
@@ -204,6 +282,36 @@ class StatesComponent(StatesComponent):
 
 		if self.draw_state:
 			engine.graphics.draw_text(self.state, (20, 20), (225, 0, 0))
+
+	def _handle_direction(self, engine):
+		"""
+		Handles the looking-direction of wario.
+		If called, looking_direction gets changed if self.RIGHT or self.LEFT are pressed.
+		:return: True if direction changed, False if not
+		"""
+		# Update Warios look-direction:
+		for event in engine.input.events:
+			if event.type == KEYDOWN:
+				if event.key == self.RIGHT:
+					if self.look_direction == LEFT:
+						self.look_direction = RIGHT
+						return True
+				elif event.key == self.LEFT:
+					if self.look_direction == RIGHT:
+						self.look_direction = LEFT
+						return True
+
+		return False
+
+	def _turn_if_needed(self, engine):
+		for event in engine.input.events:
+			if event.type == KEYDOWN:
+				if event.key == self.RIGHT:
+					if self.look_direction == LEFT:
+						self.state = WarioStates.TURN
+				elif event.key == self.LEFT:
+					if self.look_direction == RIGHT:
+						self.state = WarioStates.TURN
 
 	def count_frames(self, frame_amount):
 		"""
@@ -226,18 +334,22 @@ class LookComponent(StatesComponent):
 
 		# Initialize all Animation objects:
 		self.animations = {}
-		self.animations["stand_right"] = Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(),
-				(20, 29)), [(0, 250), (1, 100), (2, 5), (1, 20), (2, 10), (1, 100)])
+		self.animations["stand_right"] = Animation(
+			split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(),
+							  (20, 29)), [(0, 250), (1, 100), (2, 5), (1, 20), (2, 10), (1, 100)])
 		self.animations["stand_left"] = self.animations["stand_right"].make_x_mirror()
 
-		self.animations["walk_right"] = Animation(split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5)
+		self.animations["walk_right"] = Animation(
+			split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5)
 		self.animations["walk_left"] = self.animations["walk_right"].make_x_mirror()
 
-		self.animations["jump_right"] = Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()], 1)
+		self.animations["jump_right"] = Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()],
+												  1)
 		self.animations["jump_left"] = self.animations["jump_right"].make_x_mirror()
 
 		# Load images for the next couple of animations:
-		gotosleep_imgs = split_tiled_image(pygame.image.load("images\\ANI_Wario_gotosleep_r.png").convert_alpha(), (28, 30))
+		gotosleep_imgs = split_tiled_image(pygame.image.load("images\\ANI_Wario_gotosleep_r.png").convert_alpha(),
+										   (28, 30))
 
 		self.animations["gotosleep_right"] = Animation(gotosleep_imgs, [(0, 15), (1, 15), (2, 15), (3, 15), (4, 15)])
 		self.animations["gotosleep_left"] = self.animations["gotosleep_right"].make_x_mirror()
@@ -248,9 +360,14 @@ class LookComponent(StatesComponent):
 		self.animations["wakeup_right"] = Animation(gotosleep_imgs, [(4, 25), (3, 25), (2, 25), (1, 25), (0, 25)])
 		self.animations["wakeup_left"] = self.animations["wakeup_right"].make_x_mirror()
 
-		turn_around_img = split_tiled_image(pygame.image.load("images\\ANI_Wario_turn.png").convert_alpha(), (28, 29), (225, 0, 225))
+		turn_around_img = split_tiled_image(pygame.image.load("images\\ANI_Wario_turn.png").convert_alpha(), (28, 29),
+											(225, 0, 225))
 		self.animations["turn_left"] = Animation(turn_around_img, [(3, 4), (2, 4), (1, 4)])
 		self.animations["turn_right"] = Animation(turn_around_img, [(1, 4), (2, 4), (3, 4)])
+
+		fist_img = split_tiled_image(pygame.image.load("images\\ANI_Wario_softfist_l.png").convert_alpha(), (32, 30))
+		self.animations["fist_left"] = Animation(fist_img, 3)
+		self.animations["fist_right"] = self.animations["fist_left"].make_x_mirror()
 
 		# Save the current animation
 		self.current_animation = self.animations["stand_right"]
@@ -269,37 +386,40 @@ class LookComponent(StatesComponent):
 	def update(self, game_actor, engine):
 		ld = "right" if self.look_direction == RIGHT else "left"
 
-		if self.state == WarioStates.UPRIGHT_STAY:
-			self.play_animation("stand_"+ld)
+		if self.state == WarioStates.UPRIGHT_STAY or self.state == WarioStates.BUMP_BACK:
+			self.play_animation("stand_" + ld)
 		elif self.state == WarioStates.UPRIGHT_MOVE:
-			self.play_animation("walk_"+ld)
+			self.play_animation("walk_" + ld)
 		elif self.state == WarioStates.FALL_MOVE or \
-			self.state == WarioStates.FALL_STAY or \
-			self.state == WarioStates.JUMP_MOVE or \
-			self.state == WarioStates.JUMP_STAY:
-			self.play_animation("jump_"+ld)
+						self.state == WarioStates.FALL_STAY or \
+						self.state == WarioStates.JUMP_MOVE or \
+						self.state == WarioStates.JUMP_STAY:
+			self.play_animation("jump_" + ld)
 
 		elif self.state == WarioStates.GOTO_SLEEP:
-			self.play_animation("gotosleep_"+ld)
+			self.play_animation("gotosleep_" + ld)
 			if self.current_animation.get_spritenr() == 4:
-				self.play_animation("sleep_"+ld)
+				self.play_animation("sleep_" + ld)
 				self.state = WarioStates.SLEEP
 				game_actor.send_message(MSGN.STATE, self.state)
 		elif self.state == WarioStates.WAKE_UP:
-			self.play_animation("wakeup_"+ld)
+			self.play_animation("wakeup_" + ld)
 			if self.current_animation.get_spritenr() == 4:
-				self.play_animation("stand_"+ld)
+				self.play_animation("stand_" + ld)
 				self.state = WarioStates.UPRIGHT_STAY
 				game_actor.send_message(MSGN.STATE, self.state)
 
 		elif self.state == WarioStates.TURN:
 			side = "left" if self.look_direction == RIGHT else "right"
-			self.play_animation("turn_"+side)
+			self.play_animation("turn_" + side)
 			if self.current_animation.get_spritenr() == 2:
 				self.look_direction = RIGHT if side == "right" else LEFT
 				self.state = WarioStates.UPRIGHT_STAY
-				game_actor.send_message(MSGN.STATE, self.state)
-				game_actor.send_message(MSGN.LOOKDIRECTION, self.look_direction)
+
+		elif self.state == WarioStates.SFIST_JUMP or \
+				self.state == WarioStates.SFIST_FALL or \
+				self.state == WarioStates.SFIST_ONGROUND:
+			self.play_animation("fist_"+ld)
 
 		# Update the current animation:
 		self.current_animation.update()
@@ -307,6 +427,9 @@ class LookComponent(StatesComponent):
 		surface_pos = self.current_animation.get_surface().get_rect(midbottom = game_actor.rect.midbottom)
 		# Blit the current sprite to the screen:
 		engine.graphics.blit(self.current_animation.get_surface(), surface_pos)
+		# Broadcast the states:
+		game_actor.send_message(MSGN.STATE, self.state)
+		game_actor.send_message(MSGN.LOOKDIRECTION, self.look_direction)
 
 	def play_animation(self, animation_name):
 		"""Plays an animation only if the wanted animation isn't

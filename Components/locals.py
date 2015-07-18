@@ -42,6 +42,12 @@ class WarioStates:
 
 	TURN = 11
 
+	SFIST_ONGROUND = 12
+	SFIST_JUMP = 13
+	SFIST_FALL = 14
+
+	BUMP_BACK = 15
+
 
 # Spearhead-states:
 class ShStates:
