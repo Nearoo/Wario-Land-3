@@ -386,7 +386,7 @@ class LookComponent(StatesComponent):
 	def update(self, game_actor, engine):
 		ld = "right" if self.look_direction == RIGHT else "left"
 
-		if self.state == WarioStates.UPRIGHT_STAY or self.state == WarioStates.BUMP_BACK:
+		if self.state == WarioStates.UPRIGHT_STAY:
 			self.play_animation("stand_" + ld)
 		elif self.state == WarioStates.UPRIGHT_MOVE:
 			self.play_animation("walk_" + ld)
@@ -421,6 +421,10 @@ class LookComponent(StatesComponent):
 				self.state == WarioStates.SFIST_ONGROUND:
 			self.play_animation("fist_"+ld)
 
+		elif self.state == WarioStates.BUMP_BACK:
+			self.play_animation("fist_"+ld)
+			self.current_animation.pause()
+
 		# Update the current animation:
 		self.current_animation.update()
 		# Calculate the position of the image so its midbottom is aligned with the midbottom of the game_actor
@@ -439,4 +443,5 @@ class LookComponent(StatesComponent):
 			self.current_animation_name = animation_name
 			self.current_animation = self.animations[self.current_animation_name]
 			self.current_animation.reset()
+			self.current_animation.play()
 			self.current_animation.update()
