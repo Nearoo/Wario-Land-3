@@ -140,7 +140,7 @@ class StatesComponent(StatesComponent):
 				self.state = WarioStates.UPRIGHT_MOVE
 			elif engine.input.smoothkeys[self.DOWN]:
 				self.state = WarioStates.CROUCH_STAY
-			elif engine.input.smoothkeys[self.B]:
+			elif engine.input.keydown_events[self.B]:
 				self.state = WarioStates.SFIST_ONGROUND
 			elif engine.input.keyup_events[self.A]:
 				self.state = WarioStates.JUMP_STAY
@@ -153,7 +153,7 @@ class StatesComponent(StatesComponent):
 		elif self.state == WarioStates.UPRIGHT_MOVE:
 			if engine.input.smoothkeys[self.DOWN]:
 				self.state = WarioStates.CROUCH_MOVE
-			elif engine.input.smoothkeys[self.B]:
+			elif engine.input.keydown_events[self.B]:
 				self.state = WarioStates.SFIST_ONGROUND
 			elif engine.input.keydown_events[self.A]:
 				self.state = WarioStates.JUMP_MOVE
@@ -241,6 +241,8 @@ class StatesComponent(StatesComponent):
 
 			if self._counters["fist-duration"].update():
 				self.state = WarioStates.UPRIGHT_STAY
+			elif BOTTOM not in self.colliding_sides:
+				self.state = WarioStates.SFIST_FALL
 			elif engine.input.keyup_events[self.A]:
 				self.state = WarioStates.SFIST_JUMP
 
