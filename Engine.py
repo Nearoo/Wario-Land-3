@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from Input import *
 from World import *
 from Graphics import *
+from Sound import *
 from GameActorController import *
 from Actors import *
 
@@ -25,7 +26,7 @@ class Engine:
 		# Create actors-controller
 		self.actors = GameActorController(self)
 		# Create sound-controller (not jet programmed...)
-		self.sound = None
+		self.sound = Sound(self)
 
 		# Finally, first map (temporary):
 		self._load_tmx("Forest_N1_1.tmx")
