@@ -21,4 +21,4 @@ If you want to create your own levels you can do so easily using the [Tiled](htt
 ![Tile editor preview](http://i.imgur.com/Qprh2bY.png)
 
 #####License:
-Everything of this project that I created (which means spritesheets & tilesets are *not* included) is Open Source, free for anyone to used. Tough if you use this project, I'd love to hear what you've used it for, feedback or just a "Hi!" from you! :)
+Everything of this project that I created (which means spritesheets & tilesets are *not* included) stands under the [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)-License - which means you're able to use and share my work at you liking. If you want to use this, I'd love to hear something from you!
