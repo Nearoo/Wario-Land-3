@@ -1,4 +1,4 @@
-# Wario-Land-3
+# Wario Land 3 in Pygame
 A remake of the GBC-Game "Wario Land 3" using Pygame for Python.  
   
 Screenshot:  
