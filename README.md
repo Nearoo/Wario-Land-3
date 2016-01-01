@@ -13,11 +13,11 @@ Loading of new levels is also prepared (and tested) but no trigger that would ac
 * [vg-resource.com](http://www.vg-resource.com/post-392196.html)  
 * [mariouniverse.com](http://www.mariouniverse.com/sprites/gbc/wl3)
   
-...and then spearated apart and ordered using the  [Pyxeledit](http://pyxeledit.com/) editor.
+...and then spearated and ordered using the  [Pyxeledit](http://pyxeledit.com/) editor.
 
 
 
-If you want to create your own levels you can do so easily using the [Tiled](http://www.mapeditor.org/)-map editor. Just edit the file `Forest_N1_1.tmx`, everything is perfectly set up. Moving entities like Wario or Spearheads go onto the 'game_actors', while tiles (=blocks) regarding the leveldesign belong to the layer `main`. Every tile has the property `material_group`. Change this to `solid`, `hard-break`  or `soft-break` to enable collision, or to anything else to disable it.
+If you want to create your own levels you can do so easily using the [Tiled](http://www.mapeditor.org/)-map editor. Just edit the file `Forest_N1_1.tmx`, everything is perfectly set up. Moving entities like Wario or Spearheads go onto the layer 'game_actors', while tiles (=blocks) regarding the leveldesign belong to the layer `main`. Every tile has the property `material_group` (editable on the bottom left of the screen). Change this to `solid`, `hard-break`  or `soft-break` to enable collision, or to anything else to disable it.
 ![Tile editor preview](http://i.imgur.com/Qprh2bY.png)
 
 #####License:
