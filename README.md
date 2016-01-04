@@ -12,6 +12,7 @@ Loading of new levels is also prepared (and tested) but no trigger that would ac
 * [mfgg.net](http://www.mfgg.net/index.php?act=resdb&param=01&c=1&o=&filter=4.100)
 * [vg-resource.com](http://www.vg-resource.com/post-392196.html)  
 * [mariouniverse.com](http://www.mariouniverse.com/sprites/gbc/wl3)
+* [spriters-resource.com](http://www.spriters-resource.com/search/?q=wario+land+3&c=5&o%5B%5D=s&o%5B%5D=g&o%5B%5D=ts&o%5B%5D=tg&o%5B%5D=p)
   
 ...and then spearated and ordered using the  [Pyxeledit](http://pyxeledit.com/) editor.
 
