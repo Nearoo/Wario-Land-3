@@ -1,6 +1,7 @@
 from BasicComponents import *
 from locals import *
 
+from os.path import join as j_path
 
 class StateComponent(StatesComponent, VelocityComponent):
 
@@ -52,14 +53,14 @@ class LookComponent(StatesComponent):
 
 		# Initialize all Animation objects:
 		self.animations = {}
-		walk_r_imgs = split_tiled_image(pygame.image.load("images\\spearhead\\ANI_walk_r.png").convert_alpha(), (24, 16))
+		walk_r_imgs = split_tiled_image(pygame.image.load(j_path("images", "spearhead", "ANI_walk_r.png")).convert_alpha(), (24, 16))
 		self.animations["walk_right"] = Animation(walk_r_imgs, [(2, 15), (0, 15), (1, 15), (0, 15)])
 		self.animations["walk_left"] = self.animations["walk_right"].make_x_mirror()
 
 		self.animations["stand_right"] = Animation(walk_r_imgs, [0, 600])
 		self.animations["stand_left"] = self.animations["stand_right"].make_x_mirror()
 
-		turn_imgs = split_tiled_image(pygame.image.load("images\\spearhead\\ANI_turn_l.png").convert_alpha(), (24, 16))
+		turn_imgs = split_tiled_image(pygame.image.load(j_path("images", "spearhead", "ANI_turn_l.png")).convert_alpha(), (24, 16))
 		self.animations["turn_left"] = Animation(turn_imgs, [(0,8), (1, 4), (0, 8), (1, 4), (0, 15), (1, 2), (0, 8), (2, 8), (3, 8), (4, 8), (5, 30), (5, 1)])
 		self.animations["turn_right"] = self.animations["turn_left"].make_x_mirror()
 

@@ -1,6 +1,8 @@
 from globals import pygame
 from EngineController import *
 
+from os.path import join as j_path
+
 
 class Graphics(EngineController):
 	def __init__(self, engine, screen_size):
@@ -12,8 +14,8 @@ class Graphics(EngineController):
 		self.camera_pos = [0, 0]
 		self.camera_center_rect = None
 		pygame.font.init()
-		self.font =  pygame.font.Font("Other Resources\\Actor-Regular.ttf", 14)
-		self.small_font = pygame.font.Font("Other Resources\\Actor-Regular.ttf", 7)
+		self.font =  pygame.font.Font(j_path("Other Resources", "Actor-Regular.ttf"), 14)
+		self.small_font = pygame.font.Font(j_path("Other Resources", "Actor-Regular.ttf"), 7)
 
 	def set_camera_focus(self, game_actor):
 		self.camera_center_rect = game_actor.rect

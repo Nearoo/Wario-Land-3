@@ -7,6 +7,8 @@ from globals import pygame
 from BasicComponents import *
 from locals import *
 
+from os.path import join as j_path
+
 import logging
 
 
@@ -337,20 +339,20 @@ class LookComponent(StatesComponent):
 		# Initialize all Animation objects:
 		self.animations = {}
 		self.animations["stand_right"] = Animation(
-			split_tiled_image(pygame.image.load("images\\ANI_Wario_stand_r.png").convert_alpha(),
+			split_tiled_image(pygame.image.load(j_path("images", "ANI_Wario_stand_r.png")).convert_alpha(),
 							  (20, 29)), [(0, 250), (1, 100), (2, 5), (1, 20), (2, 10), (1, 100)])
 		self.animations["stand_left"] = self.animations["stand_right"].make_x_mirror()
 
 		self.animations["walk_right"] = Animation(
-			split_tiled_image(pygame.image.load("images\\ANI_Wario_walk_r.png").convert_alpha(), (24, 29)), 5)
+			split_tiled_image(pygame.image.load(j_path("images", "ANI_Wario_walk_r.png")).convert_alpha(), (24, 29)), 5)
 		self.animations["walk_left"] = self.animations["walk_right"].make_x_mirror()
 
-		self.animations["jump_right"] = Animation([pygame.image.load("images\\ANI_Wario_jump_r.png").convert_alpha()],
+		self.animations["jump_right"] = Animation([pygame.image.load(j_path("images", "ANI_Wario_jump_r.png")).convert_alpha()],
 												  1)
 		self.animations["jump_left"] = self.animations["jump_right"].make_x_mirror()
 
 		# Load images for the next couple of animations:
-		gotosleep_imgs = split_tiled_image(pygame.image.load("images\\ANI_Wario_gotosleep_r.png").convert_alpha(),
+		gotosleep_imgs = split_tiled_image(pygame.image.load(j_path("images", "ANI_Wario_gotosleep_r.png")).convert_alpha(),
 										   (28, 30))
 
 		self.animations["gotosleep_right"] = Animation(gotosleep_imgs, [(0, 15), (1, 15), (2, 15), (3, 15), (4, 15)])
@@ -362,12 +364,12 @@ class LookComponent(StatesComponent):
 		self.animations["wakeup_right"] = Animation(gotosleep_imgs, [(4, 25), (3, 25), (2, 25), (1, 25), (0, 25)])
 		self.animations["wakeup_left"] = self.animations["wakeup_right"].make_x_mirror()
 
-		turn_around_img = split_tiled_image(pygame.image.load("images\\ANI_Wario_turn.png").convert_alpha(), (28, 29),
+		turn_around_img = split_tiled_image(pygame.image.load(j_path("images", "ANI_Wario_turn.png")).convert_alpha(), (28, 29),
 											(225, 0, 225))
 		self.animations["turn_left"] = Animation(turn_around_img, [(3, 4), (2, 4), (1, 4)])
 		self.animations["turn_right"] = Animation(turn_around_img, [(1, 4), (2, 4), (3, 4)])
 
-		fist_img = split_tiled_image(pygame.image.load("images\\ANI_Wario_softfist_l.png").convert_alpha(), (32, 30))
+		fist_img = split_tiled_image(pygame.image.load(j_path("images", "ANI_Wario_softfist_l.png")).convert_alpha(), (32, 30))
 		self.animations["fist_left"] = Animation(fist_img, 3)
 		self.animations["fist_right"] = self.animations["fist_left"].make_x_mirror()
 
