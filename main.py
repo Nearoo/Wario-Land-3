@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from Engine import *
 
 # GBC: 160 x 144, level1: 480x256
