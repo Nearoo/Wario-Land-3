@@ -10,12 +10,23 @@ cd Wario-Land-3
 ./main.py
 ```
 
-## Screenshot
+## Gameplay
+
+The keys are placed so that they resemble the Gameboy Color keys:
+
+key | action
+--- | ---
+A | move left
+D | move right
+L | attack
+P | jump
+
 
 ![Wario Land 3 Screenshot](http://i.imgur.com/ucCK80E.png)  
+
 Currently, the level visible on the screenshot is the only one in existence.   
 Also, even tough everything is set up for it, Wario does not interact with anything except solid blocks.  
-Loading of new levels is also prepared (and tested) but no trigger that would activate it in-game is implemented.
+Loading of new levels is prepared (and tested) but no trigger that would activate it in-game is implemented.
 
 ## Tilesets
 
