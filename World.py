@@ -53,7 +53,7 @@ class World(EngineController):
 		:param pos: The position of the wanted tile in pixels
 		:return: Tile_id
 		"""
-		return pos[0]/self.tile_size[0]+(pos[1]/self.tile_size[1])*self.grid_size[0]
+		return int(pos[0]/self.tile_size[0]+(pos[1]/self.tile_size[1])*self.grid_size[0])
 
 	def _get_tile_pos_by_id(self, tile_id):
 		"""
@@ -139,9 +139,9 @@ class World(EngineController):
 		"""
 		layer = self._get_layer_id(layer)
 		# Calculate the position of the wanted rect:
-		pos_of_wanted_rect = map(lambda x, y, z: x+y*z, rect.topleft, self.tile_size, offset)
+		pos_of_wanted_rect = list(map(lambda x, y, z: x+y*z, rect.topleft, self.tile_size, offset))
 		# Calculate the maximum position a tile can have:
-		max_pos = map(lambda x, y: x*y, self.tile_size, self.grid_size)
+		max_pos = list(map(lambda x, y: x*y, self.tile_size, self.grid_size))
 		# If wanted tile is outside the map (=doesn't exist), return a deco-tile:
 		if pos_of_wanted_rect[0] > max_pos[0] or pos_of_wanted_rect[0] < 0 or \
 			pos_of_wanted_rect[1] > max_pos[1] or pos_of_wanted_rect[1] < 0:

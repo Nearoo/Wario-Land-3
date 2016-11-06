@@ -1,5 +1,5 @@
-from BasicComponents import *
-from locals import *
+from .BasicComponents import *
+from .locals import *
 
 
 class GeneralCollisionComponent(VelocityComponent):
@@ -95,7 +95,7 @@ class GeneralCollisionComponent(VelocityComponent):
 			debug_rect_nr += 1
 
 		# Adjust velocity according to collision:
-		self.velocity = map(lambda x, y : x*y, self.velocity, velocity_multiplier)
+		self.velocity = list(map(lambda x, y : x*y, self.velocity, velocity_multiplier))
 		# Send it to the other components:
 		game_actor.send_message(MSGN.VELOCITY, self.velocity)
 		# Send the colliding sides to the components:
@@ -113,7 +113,7 @@ class GeneralCollisionComponent(VelocityComponent):
 		point_1 = map(lambda center, size, vel: center + 1.*size/2 * -sign(vel), static_rect.center, static_rect.size, mov_vel)
 		point_2 = map(lambda center, size, vel: center + 1.*size/2 * sign(vel), mov_rect.center, mov_rect.size, mov_vel)
 
-		return map(lambda x, y: y-x, point_1, point_2)
+		return list(map(lambda x, y: y-x, point_1, point_2))
 
 
 class GravityComponent(VelocityComponent):
@@ -151,13 +151,13 @@ class ApplyVelocityComponent(VelocityComponent):
 		tmp_velocity = self.velocity
 
 		# Then, the fraction part of the velocity (e.g. 0.5 if velocity is 2.5) gets added to the tm_velocity_frac_var:
-		self._tmp_velocity_frac = map(lambda frac, vel: frac + (abs(vel)%1)*self.sign(vel), self._tmp_velocity_frac, self.velocity)
+		self._tmp_velocity_frac = list(map(lambda frac, vel: frac + (abs(vel)%1)*self.sign(vel), self._tmp_velocity_frac, self.velocity))
 
 		# After that, if tmp_velocity_frac_var is bigger than one, increase the tmp-velocity:
-		tmp_velocity = map(lambda frac, vel: vel+1 if frac >= 1 else vel-1 if frac <= -1 else vel, self._tmp_velocity_frac, self.velocity)
+		tmp_velocity = list(map(lambda frac, vel: vel+1 if frac >= 1 else vel-1 if frac <= -1 else vel, self._tmp_velocity_frac, self.velocity))
 
 		# Then, self._tmp_velocity_frac gets again reduced to its fraction part (e.g. 1.4 becomes 0.4)
-		self._tmp_velocity_frac = map(lambda frac: self.sign(frac)*(abs(frac)%1), self._tmp_velocity_frac)
+		self._tmp_velocity_frac = list(map(lambda frac: self.sign(frac)*(abs(frac)%1), self._tmp_velocity_frac))
 
 		# Finally, the game_actor gets moved with the new velocity:
 		game_actor.rect.move_ip(tmp_velocity)

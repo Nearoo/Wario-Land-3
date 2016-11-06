@@ -4,8 +4,8 @@ from utilities import *
 from pygame.locals import *
 from globals import pygame
 
-from BasicComponents import *
-from locals import *
+from .BasicComponents import *
+from .locals import *
 
 from os.path import join as j_path
 

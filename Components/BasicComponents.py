@@ -1,10 +1,10 @@
+from .locals import *
+
 from Animation import *
 from utilities import *
 
-from pygame.locals import *
 from globals import pygame
-
-from locals import *
+from pygame.locals import *
 
 
 class GameActorComponent(object):

@@ -1,5 +1,5 @@
-from BasicComponents import *
-from locals import *
+from .BasicComponents import *
+from .locals import *
 
 from os.path import join as j_path
 

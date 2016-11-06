@@ -90,7 +90,7 @@ class Engine:
 				# Dor tile in this tileset:
 				for tile in tileset.findall("tile"):
 					# For property in tile:
-					for property in tile.find("properties").findall("property"): 
+					for property in tile.find("properties").findall("property"):
 						# Update tile-property
 						self.world.set_tile_property(int(tile.attrib["id"]), property.attrib["name"], property.attrib["value"])
 
@@ -113,7 +113,7 @@ class Engine:
 						# Make sure the tile isn't empty:
 						if not splitted_row[column] == "":
 							# Calculate the position of the tile:
-							position = map(lambda x, y: x*y, (column, row-1), tile_size)
+							position = list(map(lambda x, y: x*y, (column, row-1), tile_size))
 							# Finally create the tile:
 							self.world.create_tile(layer, position, tile_size, int(splitted_row[column])-1)
 
