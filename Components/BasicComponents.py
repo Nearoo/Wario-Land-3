@@ -14,11 +14,14 @@ class GameActorComponent(object):
 	or move relative to the keys pressed by the user.
 
 	Everything they need they store themselves - if they need to communicate with each other, they can either
-	send a message using game_actor.send((name, value)) or receive a message using self.recieve(message)."""
+	send a message using game_actor.send((name, value)) or receive a message using self.recieve_message(message)."""
 
 	def update(self, game_actor, engine):
-		"""Update the component.
-		Everything from world to input to graphics is included in game_actor (game_actor.world etc...)"""
+		"""
+		Args:
+			engine: The engine singleton. Use to interact with the engine (e.g. engine.graphics, engine.world etc..)
+			game_actor: The game actor this component is supposed to change
+		"""
 		pass
 
 	def receive_message(self, name, value):
