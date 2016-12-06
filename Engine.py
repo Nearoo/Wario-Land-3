@@ -130,7 +130,7 @@ class Engine:
 					# Get the position of that object
 					position = (float(object.attrib["x"]), float(object.attrib["y"])-float(object.attrib["height"]))
 					# Spawn a game-actor with that name:
-					self.actors.spawn_game_actor(actor_name, position, self.input, self.world, self.graphics, self.sound)
+					self.actors.spawn_game_actor(actor_name, position)
 
 	def _handle_events(self):
 		for event in self.input.events:

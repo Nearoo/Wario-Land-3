@@ -36,7 +36,7 @@ class GameActorController(EngineController):
 		assert actor_id in self.actors, "Non-existent GameActor with id %i" % actor_id
 		return actor_id
 
-	def spawn_game_actor(self, actor_type, position, input, world, graphics, sound):
+	def spawn_game_actor(self, actor_type, position):
 		"""
 		Spawns a new game-actor and adds it to its own list.
 		:param actor_type: The type of the new game-actor, e.g. "Wario"
