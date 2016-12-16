@@ -1,5 +1,5 @@
 # Wario Land 3 in Pygame
-A remake of the GBC-Game "Wario Land 3" using [Pygame] for Python.
+A remake of the GBC-Game "Wario Land 3" using [Pygame] for Python. [Here's a youtube video that shows it in action.](https://www.youtube.com/watch?v=5U0iEROjCWU&t=26s)
 
 ## Running on Ubuntu
 
