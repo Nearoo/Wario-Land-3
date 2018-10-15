@@ -1,5 +1,5 @@
 # Wario Land 3 in Pygame
-A remake of the GBC-Game "Wario Land 3" using [Pygame] for Python. [Here's a youtube video that shows it in action.](https://www.youtube.com/watch?v=5U0iEROjCWU&t=26s)
+A remake of the GBC-Game "Wario Land 3" using [Pygame] for Python. [Here's a YouTube video that shows it in action.](https://www.youtube.com/watch?v=5U0iEROjCWU&t=26s)
 
 ## Running on Ubuntu
 
@@ -18,13 +18,8 @@ key | action
 --- | ---
 A | move left
 D | move right
-L | attack​
-46
-#####License:
-47
-Everything of this project that I created (which means spritesheets & tilesets are *not* included) stands under the [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)-License - which means you're able to use and share my work at you liking. If you want to use this, I'd love to hear something from you!
+L | attack
 P | jump
-
 
 ![Wario Land 3 Screenshot](http://i.imgur.com/ucCK80E.png)  
 
@@ -42,13 +37,15 @@ Tilesets and spritesheets were found on following pages:
 * [mariouniverse.com](http://www.mariouniverse.com/sprites/gbc/wl3)
 * [spriters-resource.com](http://www.spriters-resource.com/search/?q=wario+land+3&c=5&o%5B%5D=s&o%5B%5D=g&o%5B%5D=ts&o%5B%5D=tg&o%5B%5D=p)
   
-...and then spearated and ordered using the  [Pyxeledit](http://pyxeledit.com/) edit​
-46
-#####License:
-47
-Everything of this project that I created (which means spritesheets & tilesets are *not* included) stands under the [CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)-License - which means you're able to use and share my work at you liking. If you want to use this, I'd love to hear something from you!or.
+...and then spearated and ordered using the  [Pyxeledit](http://pyxeledit.com/)
 
-If you want to create your own levels you can do so easily using the [Tiled](http://www.mapeditor.org/)-map editor. Just edit the file `Forest_N1_1.tmx`, everything is perfectly set up. Moving entities like Wario or Spearheads go onto the layer 'game_actors', while tiles (=blocks) regarding the leveldesign belong to the layer `main`. Every tile has the property `material_group` (editable on the bottom left of the screen). Change this to `solid`, `hard-break`  or `soft-break` to enable collision, or to anything else to disable it.
-![Tile editor preview](http://i.imgur.com/Qprh2bY.png
+## Editing levels
+
+If you want to create your own levels you can do so easily using the [Tiled](http://www.mapeditor.org/)-map editor. Just edit the file `Forest_N1_1.tmx`, everything is set up. Moving entities like Wario or Spearheads go onto the layer 'game_actors', while tiles regarding the leveldesign belong to the layer `main`. Every tile has the property `material_group` (editable on the bottom left of the screen). Change this to `solid`, `hard-break`  or `soft-break` to enable collision, or to anything else to disable it.
+
+Preview:
+![Tile editor preview](http://i.imgur.com/Qprh2bY.png)
+
+###### _Note: The license noted within the LICENSE file is only applicable to resources that were created by me. This excludes **all** graphics. Please refer to the respective websites for more information about thier licensing._
 
 [Pygame]: http://pygame.org/
